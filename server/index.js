@@ -3,7 +3,7 @@ import cors from "cors";
 import dotnet from "dotenv";
 import connectDB from "./config/connectDB.js";
 import router from "./routes/index.js";
-
+import cookieParser from "cookie-parser";
 dotnet.config();
 const app = express();
 app.use(
@@ -13,6 +13,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
