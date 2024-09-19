@@ -3,8 +3,8 @@ import UserModel from "../model/UserModel.js";
 
 async function updateUserDetails(req, res) {
   try {
-    console.log(req.cookie);
-    const token = req.cookie.token || "";
+    console.log(req.cookies);
+    const token = req.cookies.token || "";
     const user = await getUserDetailsFromToken(token);
     const { name, profile_img } = req.body;
     const updateUser = await UserModel.updateOne(
@@ -15,7 +15,9 @@ async function updateUserDetails(req, res) {
       }
     );
 
-    const userInformation = await UserModel?.findById(user._id);
+    const userInformation = await UserModel?.findById(user._id).select(
+      "-password"
+    );
     return res.status(200).json({
       message: "User update successfully",
       data: userInformation,
