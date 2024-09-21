@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import hello from "../assets/Hello.png";
 import hellowd from "../assets/hellobw.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 import uploadImg from "../cloudinary/uploadFile";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,23 +34,18 @@ const RegisterPage = () => {
     // console.log(formData); // Replace this with your registration logic
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
     console.log(process.env.REACT_APP_BACKEND_URL);
-    // const res = await fetch(url, {
-    //   method: "post",
-    //   body: formData,
-    // });
-
     try {
       const res = await axios.post(url, formData);
       console.log(res);
       if (res.status === 201) {
-        // toast
-        toast.success(res?.data.message);
+        toast.success(res?.data?.message);
         setFormData({
           name: "",
           email: "",
           password: "",
           profile_img: "",
         });
+        // navigate("/login");
       }
     } catch (error) {
       //   console.log(error);

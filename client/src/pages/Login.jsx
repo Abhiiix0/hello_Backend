@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import hello from "../assets/Hello.png";
 import hellowd from "../assets/hellobw.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 import uploadImg from "../cloudinary/uploadFile";
 import axios from "axios";
+
 import { toast, Toaster } from "react-hot-toast";
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,20 +24,25 @@ const Login = () => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/login`;
     console.log(process.env.REACT_APP_BACKEND_URL);
     try {
-      const res = await axios.post(url, formData);
+      const res = await axios({
+        method: "post",
+        withCredentials: true,
+        url,
+        data: formData,
+      });
       console.log(res);
       if (res.status === 200) {
-        // toast
-        toast.success(res?.data.message);
+        toast.success(res?.data?.message);
         setFormData({
           email: "",
           password: "",
         });
+        navigate("/");
       }
     } catch (error) {
       //   console.log(error);
-      if (error.status !== 200) {
-        toast.error(error.response.data.message);
+      if (error?.status !== 200) {
+        toast.error(error?.response?.data?.message);
       }
     }
   };
