@@ -6,3 +6,9 @@
   margin: 0;
   padding: 0;
 }
+
+.custom-pattern {
+	background: radial-gradient(circle, transparent 20%, #95EDE5 20%, #95EDE5 80%, transparent 80%, transparent) 0% 0% / 48px 48px, radial-gradient(circle, transparent 20%, #95EDE5 20%, #95EDE5 80%, transparent 80%, transparent) 24px 24px / 48px 48px, linear-gradient(#1A8FE5 1.5px, transparent 1.5px) 0px -0.75px / 24px 24px, linear-gradient(90deg, #1A8FE5 1.5px, #95EDE5 1.5px) -0.75px 0px / 24px 24px #95EDE5;
+	background-size: 48px 48px, 48px 48px, 24px 24px, 24px 24px;
+	background-color: #95EDE5;
+}

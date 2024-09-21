@@ -6,49 +6,30 @@ import { CloseOutlined } from "@ant-design/icons";
 import uploadImg from "../cloudinary/uploadFile";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
-const RegisterPage = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    profile_img: "", // Adding profilePic state
   });
 
-  const [preview, setPreview] = useState(null); // State for image preview
-  const [imgName, setimgName] = useState("Choose File");
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    const fileee = await uploadImg(file);
-    setimgName(fileee.display_name);
-    setPreview(fileee?.url); // Set image preview
-    setFormData({ ...formData, profile_img: fileee?.url });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(formData); // Replace this with your registration logic
-    const url = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/login`;
     console.log(process.env.REACT_APP_BACKEND_URL);
-    // const res = await fetch(url, {
-    //   method: "post",
-    //   body: formData,
-    // });
-
     try {
       const res = await axios.post(url, formData);
       console.log(res);
-      if (res.status === 201) {
+      if (res.status === 200) {
         // toast
         toast.success(res?.data.message);
         setFormData({
-          name: "",
           email: "",
           password: "",
-          profile_img: "",
         });
       }
     } catch (error) {
@@ -58,7 +39,6 @@ const RegisterPage = () => {
       }
     }
   };
-
   return (
     <div className=" h-screen bg-blue-100 flex items-center justify-center p-8">
       <Toaster position="top-right" />
@@ -66,10 +46,11 @@ const RegisterPage = () => {
         {/* Left Side with Messaging Design */}
         <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#46CDCF] to-[#2B8A8D] items-center justify-center p-10 rounded-l-lg">
           <div className="text-white text-center space-y-6">
-            <h1 className="text-4xl font-bold">Stay Connected</h1>
+            <h1 className="text-4xl font-bold">Welcome Back</h1>
             <p className="text-lg">
-              Join our messaging platform and connect with your friends in
-              real-time.
+              {" "}
+              Connect with friends, family, and colleagues. Enjoy secure,
+              real-time messaging and file sharing.
             </p>
             {/* Example messaging-related illustration or icon */}
             <img
@@ -87,23 +68,10 @@ const RegisterPage = () => {
               {/* Replace the src below with your actual logo */}
               {/* <img src={hello} alt="Logo" className="mx-auto h-16" /> */}
               <h2 className="text-2xl uppercase font-bold text-[#2B8A8D]">
-                Create an Account
+                Login
               </h2>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
-                />
-              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Email
@@ -130,59 +98,18 @@ const RegisterPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
                 />
               </div>
-              {/* Profile Picture Upload */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Profile Picture
-                </label>
-                <div className=" flex items-center justify-center gap-2 h-fit ">
-                  <label
-                    htmlFor="profilePic"
-                    // id="profilePic"
-                    className=" cursor-pointer border rounded-md grid place-content-center h-11 w-full text-sm font-medium text-gray-700"
-                  >
-                    <div>{imgName}</div>
-                  </label>
-                  <input
-                    type="file"
-                    id="profilePic"
-                    name="profilePic"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full px-4 bg-gray-200 hidden border h-12  place-content-center rounded-lg focus:outline-none focus:border-[#46CDCF]"
-                  />
-                  {preview && (
-                    <div className="  flex relative">
-                      <div
-                        className=" cursor-pointer absolute top-0 right-0 bg-red-400 text-white rounded-full text-[8px] px-[2px]"
-                        onClick={() => {
-                          setPreview("");
-                          setimgName("Choose file");
-                        }}
-                      >
-                        {/* <CloseOutlined/> */}
-                        <CloseOutlined />
-                      </div>
-                      <img
-                        src={preview}
-                        alt="Profile Preview"
-                        className="h-[43px] w-[51px] rounded-full object-cover mx-auto"
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
+
               <button
                 type="submit"
                 className="w-full bg-[#46CDCF] text-white py-2 rounded-lg hover:bg-[#3BA6A7] transition duration-300"
               >
-                Register
+                Login
               </button>
             </form>
             <p className="text-center text-sm text-gray-600 mt-4">
-              Already have an account?{" "}
-              <Link to="/login" className="text-[#46CDCF] hover:underline">
-                Login
+              Dont't have an account?{" "}
+              <Link to="/register" className="text-[#46CDCF] hover:underline">
+                register
               </Link>
             </p>
           </div>
@@ -192,4 +119,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default Login;
