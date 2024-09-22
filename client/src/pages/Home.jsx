@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
@@ -7,9 +7,11 @@ import { useDispatch } from "react-redux";
 import { logout, setUser } from "../redux/userSlice";
 import Slider from "../Components/Slider";
 import hello from "../assets/hellobw.png";
+// import UserDetailsEdit from "../Components/userDetailsEdit";
 const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const getUserData = async () => {
     //fetch data from API
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/user-details`;
@@ -47,7 +49,7 @@ const Home = () => {
         <div className=" grid place-content-center h-full w-full">
           <img src={hello} className=" w-[500px]" alt="" />
         </div>
-        {/* <Outlet></Outlet> */}
+        <Outlet></Outlet>
       </section>
     </div>
   );

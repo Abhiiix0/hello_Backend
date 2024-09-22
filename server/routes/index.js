@@ -17,6 +17,6 @@ router.post("/login", login);
 
 router.get("/user-details", userDetails);
 router.get("/logout", logout);
-router.post("/update-user", updateUserDetails);
+router.put("/update-user", updateUserDetails);
 //we will exports all the routes
 export default router;
