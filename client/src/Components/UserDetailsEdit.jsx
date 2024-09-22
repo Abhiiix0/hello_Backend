@@ -66,7 +66,7 @@ const UserDetailsEdit = ({ data }) => {
               <div
                 onMouseEnter={() => setimgChng(true)}
                 onMouseLeave={() => setimgChng(false)}
-                className=" border relative bg-slate-200 w-32 overflow-hidden h-32 rounded-full"
+                className=" border relative gird place-content-center object-contain bg-slate-200 w-32 overflow-hidden h-32 rounded-full"
               >
                 {formData?.profile_img === "" ? (
                   <div className=" w-32 bg-slate-200 text-4xl font-bold grid place-content-center uppercase h-full">

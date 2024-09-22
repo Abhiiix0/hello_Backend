@@ -45,10 +45,10 @@ const Home = () => {
   console.log(baseofMsg);
   return (
     <div className=" grid lg:grid-cols-[300px,1fr] h-screen max-h-screen">
-      <section className=" bg-white">
+      <section className={`bg-white ${!baseofMsg && "hidden"} lg:block`}>
         <Slider />
       </section>
-      <section>
+      <section className={`  ${baseofMsg && "hidden"}`}>
         {baseofMsg ? (
           <div className=" grid place-content-center h-full w-full">
             <img src={hello} className=" w-[500px]" alt="" />

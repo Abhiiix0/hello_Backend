@@ -36,9 +36,9 @@ const Slider = () => {
       toast.error("Faild to logout");
     }
   };
-
+  const [allUser, setallUser] = useState([]);
   return (
-    <div className=" w-full h-full">
+    <div className=" w-full h-full grid grid-cols-[62px,1fr]">
       <div className=" w-[62px] h-full bg-[#c4efef] flex flex-col items-center  justify-between py-3  gap-2">
         <div className=" flex flex-col gap-3">
           <div className=" cursor-pointer  transition-colors duration-200 bg-white w-10 h-10 rounded-md grid place-content-center">
@@ -62,7 +62,7 @@ const Slider = () => {
               </p>
             ) : (
               <img
-                src="https://res.cloudinary.com/dldypjtlj/image/upload/v1726925402/hrgqaeek4h0ilmb7srvn.png"
+                src={user?.profile_img}
                 className="w-8 grid place-content-center capitalize h-8 rounded-full "
                 alt=""
               />
@@ -74,6 +74,28 @@ const Slider = () => {
           >
             <RiLogoutCircleLine size={25} />
           </div>
+        </div>
+      </div>
+      <div className=" w-full h-full bg-white rounded-md overflow-hidden">
+        <div className=" border-b px-2  border-[#c4efef] h-[60px] flex items-center justify-start ">
+          <p className=" font-semibold text-xl">Message</p>
+        </div>
+        <div className="  h-[calc(100vh-60px)] p-1 w-full">
+          {allUser?.length === 0 ? (
+            <div className="  w-full h-full flex flex-col gap-1">
+              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+            </div>
+          ) : (
+            <div className=" h-full grid place-content-center w-full">
+              <p className=" text-center w-full text-gray-200 font-semibold text-xl">
+                Explore users to start a conversation with.
+              </p>
+            </div>
+          )}
         </div>
       </div>
       {opneEditModal && (
