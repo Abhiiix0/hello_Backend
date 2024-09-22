@@ -8,6 +8,7 @@ import UserDetailsEdit from "./UserDetailsEdit";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UserSearch from "./UserSearch";
 const Slider = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -37,6 +38,7 @@ const Slider = () => {
     }
   };
   const [allUser, setallUser] = useState([]);
+  const [srchUserModal, setsrchUserModal] = useState(true);
   return (
     <div className=" w-full h-full grid grid-cols-[62px,1fr]">
       <div className=" w-[62px] h-full bg-[#c4efef] flex flex-col items-center  justify-between py-3  gap-2">
@@ -44,7 +46,10 @@ const Slider = () => {
           <div className=" cursor-pointer  transition-colors duration-200 bg-white w-10 h-10 rounded-md grid place-content-center">
             <IoChatbubbleEllipsesOutline size={25} />
           </div>
-          <div className=" cursor-pointer  transition-colors duration-200 hover:bg-white w-10 h-10 rounded-md grid place-content-center">
+          <div
+            onClick={() => setsrchUserModal(true)}
+            className=" cursor-pointer  transition-colors duration-200 hover:bg-white w-10 h-10 rounded-md grid place-content-center"
+          >
             <HiOutlineUserAdd size={25} />
           </div>
         </div>
@@ -105,6 +110,7 @@ const Slider = () => {
           // setopneEditModal={setopneEditModal}
         />
       )}
+      <UserSearch open={srchUserModal} close={setsrchUserModal}></UserSearch>
     </div>
   );
 };
