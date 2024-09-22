@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import hello from "../assets/Hello.png";
 import hellowd from "../assets/hellobw.png";
 import { Link, useNavigate } from "react-router-dom";
-import { CloseOutlined } from "@ant-design/icons";
-import uploadImg from "../cloudinary/uploadFile";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
 import { toast, Toaster } from "react-hot-toast";
+import { setToken } from "../redux/userSlice";
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -30,8 +29,10 @@ const Login = () => {
         url,
         data: formData,
       });
-      console.log(res);
+      console.log("login page", res);
       if (res.status === 200) {
+        dispatch(setToken(res?.data?.token));
+        localStorage.setItem("token", res?.data?.token);
         toast.success(res?.data?.message);
         setFormData({
           email: "",
@@ -48,7 +49,6 @@ const Login = () => {
   };
   return (
     <div className=" h-screen bg-blue-100 flex items-center justify-center p-8">
-      <Toaster position="top-right" />
       <div className="flex w-full h-[530px] max-w-5xl border bg-gray-100 rounded-lg shadow-lg">
         {/* Left Side with Messaging Design */}
         <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#46CDCF] to-[#2B8A8D] items-center justify-center p-10 rounded-l-lg">

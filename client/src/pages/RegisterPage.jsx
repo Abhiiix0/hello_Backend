@@ -57,7 +57,6 @@ const RegisterPage = () => {
 
   return (
     <div className=" h-screen bg-blue-100 flex items-center justify-center p-8">
-      <Toaster position="top-right" />
       <div className="flex w-full h-[530px] max-w-5xl border bg-gray-100 rounded-lg shadow-lg">
         {/* Left Side with Messaging Design */}
         <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#46CDCF] to-[#2B8A8D] items-center justify-center p-10 rounded-l-lg">
