@@ -38,7 +38,7 @@ const Slider = () => {
     }
   };
   const [allUser, setallUser] = useState([]);
-  const [srchUserModal, setsrchUserModal] = useState(true);
+  const [srchUserModal, setsrchUserModal] = useState(false);
   return (
     <div className=" w-full h-full grid grid-cols-[62px,1fr]">
       <div className=" w-[62px] h-full bg-[#c4efef] flex flex-col items-center  justify-between py-3  gap-2">

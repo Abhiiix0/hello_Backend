@@ -6,6 +6,7 @@ import userDetails from "../controller/userDetails.js";
 import logout from "../controller/logout.js";
 import updateUserDetails from "../controller/updateUserDetails.js";
 import login from "../controller/login.js";
+import searchUser from "../controller/searchUser.js";
 
 // to create routes
 const router = express.Router();
@@ -18,5 +19,6 @@ router.post("/login", login);
 router.get("/user-details", userDetails);
 router.get("/logout", logout);
 router.put("/update-user", updateUserDetails);
+router.post("/search-user", searchUser);
 //we will exports all the routes
 export default router;
