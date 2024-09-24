@@ -6,6 +6,7 @@ const initalState = {
   email: "",
   profile_img: "",
   token: "",
+  onlineUser: [],
 };
 
 export const userSlice = createSlice({
@@ -27,6 +28,9 @@ export const userSlice = createSlice({
       state.email = "";
       state.profile_img = "";
       state.token = "";
+    },
+    setOnlineUser: (state, action) => {
+      // state.onlineUser.push(payload);
     },
   },
 });

@@ -2,8 +2,11 @@ import UserModel from "../model/UserModel.js";
 
 const searchUser = async (req, res) => {
   try {
+    console.log(req.body);
     const { search } = req.body;
+    console.log(search);
     const query = new RegExp(search, "i", "g");
+    console.log(query);
 
     const user = await UserModel.find({
       $or: [{ name: query }, { email: query }],

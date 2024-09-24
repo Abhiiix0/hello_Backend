@@ -4,8 +4,9 @@ import dotnet from "dotenv";
 import connectDB from "./config/connectDB.js";
 import router from "./routes/index.js";
 import cookieParser from "cookie-parser";
+import { app, server } from "./socket/index.js";
 dotnet.config();
-const app = express();
+// const app = express();
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api", router);
 
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 });

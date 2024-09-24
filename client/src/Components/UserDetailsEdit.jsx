@@ -78,7 +78,7 @@ const UserDetailsEdit = ({ data }) => {
                 {imgChng && (
                   <label
                     htmlFor="profilePic"
-                    className=" cursor-pointer grid place-content-center font-medium bg-slate-100 w-full h-10 opacity-[0.5] absolute bottom-0 left-0"
+                    className=" cursor-pointer grid place-content-center font-medium bg-slate-100 w-full h-10 transition-opacity duration-300 opacity-[0.5] absolute bottom-0 left-0"
                   >
                     Change
                   </label>

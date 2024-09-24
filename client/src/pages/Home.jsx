@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { logout, setUser } from "../redux/userSlice";
 import Slider from "../Components/Slider";
 import hello from "../assets/hellobw.png";
+import { io } from "socket.io-client";
 // import UserDetailsEdit from "../Components/userDetailsEdit";
 const Home = () => {
   const location = useLocation();
@@ -40,6 +41,21 @@ const Home = () => {
   useEffect(() => {
     getUserData();
   }, []);
+
+  useEffect(() => {
+    const socketConnection = io(process.env.REACT_APP_BACKEND_URL, {
+      auth: {
+        token: localStorage.getItem("token"),
+      },
+    });
+    socketConnection.on("onlineUser", (data) => {
+      console.log(data);
+    });
+    return () => {
+      socketConnection.disconnect();
+    };
+  }, []);
+
   console.log(location);
   const baseofMsg = location.pathname === "/";
   console.log(baseofMsg);
@@ -49,14 +65,13 @@ const Home = () => {
         <Slider />
       </section>
       <section className={`  ${baseofMsg && "hidden"}`}>
-        {baseofMsg ? (
-          <div className=" grid place-content-center h-full w-full">
-            <img src={hello} className=" w-[500px]" alt="" />
-          </div>
-        ) : (
-          <Outlet></Outlet>
-        )}
+        <Outlet></Outlet>
       </section>
+      {baseofMsg && (
+        <div className=" grid place-content-center h-full w-full">
+          <img src={hello} className=" w-[500px]" alt="" />
+        </div>
+      )}
     </div>
   );
 };
