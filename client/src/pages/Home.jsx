@@ -4,7 +4,12 @@ import axios from "axios";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { logout, setUser } from "../redux/userSlice";
+import {
+  logout,
+  setOnlineUser,
+  setSocketConnection,
+  setUser,
+} from "../redux/userSlice";
 import Slider from "../Components/Slider";
 import hello from "../assets/hellobw.png";
 import { io } from "socket.io-client";
@@ -50,7 +55,11 @@ const Home = () => {
     });
     socketConnection.on("onlineUser", (data) => {
       console.log(data);
+      dispatch(setOnlineUser(data));
     });
+
+    dispatch(setSocketConnection(socketConnection));
+
     return () => {
       socketConnection.disconnect();
     };
@@ -68,7 +77,7 @@ const Home = () => {
         <Outlet></Outlet>
       </section>
       {baseofMsg && (
-        <div className=" grid place-content-center h-full w-full">
+        <div className="   hidden lg:grid place-content-center h-full w-full">
           <img src={hello} className=" w-[500px]" alt="" />
         </div>
       )}
