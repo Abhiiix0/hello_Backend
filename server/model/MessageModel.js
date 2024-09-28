@@ -17,6 +17,11 @@ const MessageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    msgBySender: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

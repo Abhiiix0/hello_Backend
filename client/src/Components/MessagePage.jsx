@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
 import logo from "../assets/hellobw.png";
 import { IoMdAttach } from "react-icons/io";
@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaRegImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa";
+import moment from "moment";
 const MessagePage = () => {
   const userId = useParams();
   const [userData, setuserData] = useState({
@@ -16,20 +17,55 @@ const MessagePage = () => {
     online: false,
   });
   const socketConnection = useSelector((state) => state.user.socketConnection);
-  console.log("userId", userId.userId);
-  // console.log(socketConnection);
+  const usser = useSelector((state) => state.user);
+  const [AllMessages, setAllMessages] = useState([]);
+  // console.log("userId", userId.userId);
+
+  const [openOption, setopenOption] = useState(false);
+  const [msg, setmsg] = useState("");
+  const sendMsg = async () => {
+    if (msg) {
+      if (socketConnection) {
+        socketConnection.emit("NewMessage", {
+          sender: usser._id,
+          receiver: userId.userId,
+          text: msg,
+          imageUrl: "",
+          videoUrl: "",
+        });
+        setmsg("");
+      }
+    }
+  };
+
+  const currentMsg = useRef(null);
+  useEffect(() => {
+    console.log("yo1");
+    if (currentMsg.current) {
+      console.log("yo");
+      currentMsg?.current?.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+  }, [AllMessages]);
   useEffect(() => {
     if (socketConnection) {
       console.log("run");
       socketConnection.emit("messagePage", userId.userId);
 
       socketConnection.on("messageUser", (data) => {
-        console.log("userData", data);
+        // console.log("userData", data);
         setuserData(data);
       });
+
+      socketConnection.on("message", (data) => {
+        console.log("conversation", data);
+        setAllMessages([...data]);
+        // currentMsg?.current
+      });
     }
-  }, [socketConnection, userId.userId]);
-  const [openOption, setopenOption] = useState(false);
+  }, [socketConnection, userId.userId, usser]);
+
   return (
     <div
       // style={{
@@ -75,6 +111,29 @@ const MessagePage = () => {
           </div>
         </div>
       </header>
+
+      <main className=" h-[81vh] mb-1  w-full mt-1">
+        <div className=" h-full mb-5 overflow-y-scroll flex flex-col gap-1 px-2 w-full">
+          {AllMessages?.map((mg, i) => (
+            <div
+              ref={currentMsg}
+              className={`bg-white px-2 w-fit max-w-[80%] rounded-md ${
+                mg?.msgBySender === usser?._id && " self-end"
+              }`}
+            >
+              <p className=" m-0 font-medium text-[15px]">{mg?.text}</p>
+              <p
+                className={` text-[10px] mt-[-4px] m-0 ${
+                  mg?.msgBySender === usser?._id && " text-right"
+                }`}
+              >
+                {moment(mg?.createdAt).format("hh:mm")}
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
+
       <div
         className={`bg-white shadow-md absolute right-[70px] bottom-[62px] rounded-md h-fit w-fit px-3 py-2 transform transition-transform duration-300 ${
           openOption ? "scale-100 " : "scale-0 "
@@ -92,11 +151,13 @@ const MessagePage = () => {
           </p>
         </div>
       </div>
-      <footer className=" p-2 w-full flex items-center gap-2 justify-between">
+      <footer className=" p-2 pt-0 w-full flex items-center gap-2 justify-between">
         <div className=" flex gap-2 px-2 pl-4 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
           <input
             type="text"
             placeholder="Type your message..."
+            value={msg}
+            onChange={(e) => setmsg(e.target.value)}
             className=" h-full outline-none w-full "
           />
 
@@ -106,7 +167,10 @@ const MessagePage = () => {
             size={22}
           />
         </div>
-        <div className=" bg-blue-500 h-12 w-[54px] grid place-content-center rounded-full">
+        <div
+          onClick={() => sendMsg()}
+          className=" bg-blue-500 h-12 w-[54px] grid place-content-center rounded-full"
+        >
           <LuSendHorizonal className=" text-white cursor-pointer" size={20} />
         </div>
       </footer>
