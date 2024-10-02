@@ -1,15 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 import { RiLogoutCircleLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserDetailsEdit from "./UserDetailsEdit";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UserSearch from "./UserSearch";
 const Slider = () => {
+  const socketConnection = useSelector((state) => state.user.socketConnection);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [opneEditModal, setopneEditModal] = useState(false);
@@ -39,6 +40,37 @@ const Slider = () => {
   };
   const [allUser, setallUser] = useState([]);
   const [srchUserModal, setsrchUserModal] = useState(false);
+  useEffect(() => {
+    if (socketConnection) {
+      // console.log("sidebar", user?._id);
+      socketConnection.emit("sidebar", user._id);
+      socketConnection.on("alluserChat", (data) => {
+        console.log("alluserChat", data);
+
+        const conversationuserData = data?.map((convoUser) => {
+          if (convoUser?.sender?._id === convoUser?.receiver?._id) {
+            return {
+              ...convoUser,
+              userDetails: convoUser?.sender,
+            };
+          } else if (convoUser?.sender?._id === user?._id) {
+            return {
+              ...convoUser,
+              userDetails: convoUser?.receiver,
+            };
+          } else {
+            return {
+              ...convoUser,
+              userDetails: convoUser?.sender,
+            };
+          }
+        });
+        console.log("conversationuserData", conversationuserData);
+        setallUser(conversationuserData);
+      });
+    }
+  }, [socketConnection, user]);
+
   return (
     <div className=" w-full h-full grid grid-cols-[62px,1fr]">
       <div className=" w-[62px] h-full bg-[#c4efef] flex flex-col items-center  justify-between py-3  gap-2">
@@ -86,13 +118,41 @@ const Slider = () => {
           <p className=" font-semibold text-xl">Message</p>
         </div>
         <div className="  h-[calc(100vh-60px)] p-1 w-full">
-          {allUser?.length === 0 ? (
+          {allUser?.length !== 0 ? (
             <div className="  w-full h-full flex flex-col gap-1">
-              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
-              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
-              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
-              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
-              <div className=" bg-slate-200 h-14 w-full rounded-md"></div>
+              {allUser?.map((usr) => (
+                <div
+                  key={usr?._id}
+                  className=" bg-slate-200 h-14 w-full rounded-md"
+                >
+                  <div className=" flex gap-2">
+                    <div className=" w-8 border border-red-600 h-8">
+                      {usr?.userDetails?.profile_img === "" ? (
+                        // <CgProfile name="User Name" glyphName={"ab"} size={25} />
+                        <p className=" bg-yellow-100  border-black  w-8 grid place-content-center capitalize h-8 rounded-full">
+                          {" "}
+                          {usr.receiver.name.slice(0, 2)}
+                        </p>
+                      ) : (
+                        <img
+                          src={usr?.userDetails?.profile_img}
+                          className=" w-8 grid place-content-center capitalize h-8 rounded-full "
+                          alt=""
+                        />
+                      )}
+                    </div>
+                    <div className=" flex flex-col">
+                      <p className=" m-0 text-ellipsis line-clamp-1 font-bold">
+                        {usr?.userDetails?.name} uhidsfsdodsp scdi cdsopc ds
+                        sicskoc scods cdskcsicjsol ocsd c
+                      </p>
+                      <p className="m-0 text-ellipsis line-clamp-1 text-sm ">
+                        {usr?.lastMsg?.text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className=" h-full grid place-content-center w-full">

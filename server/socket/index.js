@@ -45,6 +45,22 @@ io.on("connection", async (socket) => {
     };
 
     socket.emit("messageUser", payload);
+
+    //
+    const getConversationmsg = await ConversationModel.findOne({
+      $or: [
+        { sender: user?.id, receiver: userId },
+        { sender: userId, receiver: user?.id },
+      ],
+    })
+      .populate("messages")
+      .sort({ updatedAt: -1 });
+    // console.log(object)
+    const datamsgss =
+      getConversationmsg?.messages?.length === 0
+        ? []
+        : getConversationmsg?.messages;
+    io.to(user?.id).emit("prvMsg", datamsgss);
   });
 
   socket.on("NewMessage", async (data) => {
@@ -78,7 +94,7 @@ io.on("connection", async (socket) => {
     // update conversation
     const updateConversation = await ConversationModel.updateOne(
       {
-        _id: coversation._id,
+        _id: coversation?._id,
       },
       { $push: { messages: saveMessage?._id } }
     );
@@ -95,10 +111,39 @@ io.on("connection", async (socket) => {
     console.log("sender", data.sender);
     console.log("receiver", data.receiver);
 
-    io.to(data.receiver).emit("message", getConversationmsg.messages);
-    io.to(data.sender).emit("message", getConversationmsg.messages);
+    io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+    io.to(data.sender).emit("message", getConversationmsg.messages || []);
     console.log("userSend Msg", data);
     // console.log("coversation", getConversationmsg);
+  });
+
+  socket.on("sidebar", async (data) => {
+    console.log("sidebar", data);
+    if (data) {
+      const getChatConversationmsg = await ConversationModel.find({
+        $or: [{ sender: data }, { receiver: data }],
+      })
+        .sort({ updatedAt: -1 })
+        .populate("messages")
+        .populate("sender")
+        .populate("receiver")
+        .select("-password");
+      console.log("hi", getChatConversationmsg);
+      const conversations = getChatConversationmsg?.map((conv) => {
+        const CountUnseenMsg = conv?.messages.reduce(
+          (prv, cur) => prv + (cur?.seen ? 0 : 1),
+          0
+        );
+        return {
+          _id: conv?._id,
+          sender: conv?.sender,
+          receiver: conv?.receiver,
+          unmessages: CountUnseenMsg,
+          lastMsg: conv.messages[conv?.messages?.length - 1],
+        };
+      });
+      socket.emit("alluserChat", conversations);
+    }
   });
   socket.on("disconnect", () => {
     onlineUser.delete(user?.id);

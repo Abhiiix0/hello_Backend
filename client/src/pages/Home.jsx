@@ -28,7 +28,7 @@ const Home = () => {
         withCredentials: true,
       });
       console.log(res);
-      if (res?.data.data.logout) {
+      if (res?.data?.data?.logout) {
         // console.log("hii");
         // toast.error(res?.data.data.message);
         dispatch(logout());
