@@ -83,9 +83,9 @@ io.on("connection", async (socket) => {
       const conversation = await createConversation.save();
 
       //message
-      const message = await new Messagemodel({
+      const message = new Messagemodel({
         text: data.text,
-        imageUrl: "",
+        imageUrl: data?.imageUrl,
         videoUrl: "",
         msgBySender: data.sender,
       });
@@ -122,9 +122,9 @@ io.on("connection", async (socket) => {
       io.to(data.sender).emit("alluserChat", coversationsSenders);
     } else {
       //message
-      const message = await new Messagemodel({
+      const message = new Messagemodel({
         text: data.text,
-        imageUrl: "",
+        imageUrl: data?.imageUrl,
         videoUrl: "",
         msgBySender: data.sender,
       });
