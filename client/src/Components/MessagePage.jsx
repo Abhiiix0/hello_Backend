@@ -26,7 +26,7 @@ const MessagePage = () => {
   const sendMsg = async () => {
     if (msg) {
       if (socketConnection) {
-        socketConnection.emit("NewMessage", {
+        await socketConnection.emit("NewMessage", {
           sender: usser._id,
           receiver: userId.userId,
           text: msg,
@@ -53,22 +53,21 @@ const MessagePage = () => {
       console.log("run");
       socketConnection.emit("messagePage", userId.userId);
 
+      socketConnection.emit("seen", userId.userId);
+
       socketConnection.on("messageUser", (data) => {
-        // console.log("userData", data);
         setuserData(data);
       });
       socketConnection.on("prvMsg", (data) => {
         console.log("prvMsg", data);
         if (data) {
-          console.log("hhu");
           setAllMessages([...data]);
         } else {
-          console.log("ho");
           setAllMessages([]);
         }
       });
       socketConnection.on("message", (data) => {
-        console.log("conversation", data);
+        // console.log("conversation", data);
         setAllMessages([...data]);
         // currentMsg?.current
       });

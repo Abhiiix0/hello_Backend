@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserDetailsEdit from "./UserDetailsEdit";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import UserSearch from "./UserSearch";
 const Slider = () => {
   const socketConnection = useSelector((state) => state.user.socketConnection);
@@ -121,12 +121,13 @@ const Slider = () => {
           {allUser?.length !== 0 ? (
             <div className="  w-full h-full flex flex-col gap-1">
               {allUser?.map((usr) => (
-                <div
-                  key={usr?._id}
-                  className=" bg-slate-200 h-14 w-full rounded-md"
+                <NavLink
+                  to={`/` + usr?.userDetails?._id}
+                  key={usr?.userDetails?._id}
+                  className=" bg-slate-100 h-14 items-center px-2 flex w-full rounded-md"
                 >
-                  <div className=" flex gap-2">
-                    <div className=" w-8 border border-red-600 h-8">
+                  <div className=" flex gap-2 w-full items-center ">
+                    <div className=" w-8   h-8">
                       {usr?.userDetails?.profile_img === "" ? (
                         // <CgProfile name="User Name" glyphName={"ab"} size={25} />
                         <p className=" bg-yellow-100  border-black  w-8 grid place-content-center capitalize h-8 rounded-full">
@@ -134,24 +135,32 @@ const Slider = () => {
                           {usr.receiver.name.slice(0, 2)}
                         </p>
                       ) : (
-                        <img
-                          src={usr?.userDetails?.profile_img}
-                          className=" w-8 grid place-content-center capitalize h-8 rounded-full "
-                          alt=""
-                        />
+                        <div className=" w-8 h-8 rounded-full ">
+                          <img
+                            src={usr?.userDetails?.profile_img}
+                            className=" w-8 h-8 rounded-full "
+                            alt=""
+                          />
+                        </div>
                       )}
                     </div>
-                    <div className=" flex flex-col">
-                      <p className=" m-0 text-ellipsis line-clamp-1 font-bold">
-                        {usr?.userDetails?.name} uhidsfsdodsp scdi cdsopc ds
-                        sicskoc scods cdskcsicjsol ocsd c
-                      </p>
-                      <p className="m-0 text-ellipsis line-clamp-1 text-sm ">
-                        {usr?.lastMsg?.text}
-                      </p>
+                    <div className=" flex w-full justify-between items-start gap-2">
+                      <div className=" flex flex-col  w-full">
+                        <p className=" m-0 text-ellipsis line-clamp-1 font-normal ">
+                          {usr?.userDetails?.name}
+                        </p>
+                        <p className="m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
+                          {usr?.lastMsg?.text}
+                        </p>
+                      </div>
+                      {usr?.unmessages !== 0 && (
+                        <div className="m-0 mt-[2px] h-5 w-6 rounded-full line-clamp-1 bg-blue-300 text-[10px] grid place-content-center text-white ">
+                          {usr?.unmessages}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                </NavLink>
               ))}
             </div>
           ) : (

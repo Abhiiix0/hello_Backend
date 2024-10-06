@@ -15,7 +15,7 @@ async function login(req, res) {
 
     if (!decryptPassword) {
       return res.status(400).json({
-        message: "Please check password",
+        message: "Please check email & password",
         error: true,
       });
     }
