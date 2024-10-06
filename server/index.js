@@ -9,7 +9,7 @@ dotnet.config();
 // const app = express();
 app.use(
   cors({
-    origin: "*",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
