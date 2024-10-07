@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserSearch from "./UserSearch";
+import { FaRegImage } from "react-icons/fa6";
 const Slider = () => {
   const socketConnection = useSelector((state) => state.user.socketConnection);
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ const Slider = () => {
                 <NavLink
                   to={`/` + usr?.userDetails?._id}
                   key={usr?.userDetails?._id}
-                  className=" bg-slate-100 h-14 items-center px-2 flex w-full rounded-md"
+                  className=" border-b-[1px] hover:border hover:border-[#c4efef] hover:rounded-md h-14 items-center px-2 flex w-full"
                 >
                   <div className=" flex gap-2 w-full items-center ">
                     <div className=" w-8   h-8">
@@ -152,6 +153,12 @@ const Slider = () => {
                         <p className="m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
                           {usr?.lastMsg?.text}
                         </p>
+                        {usr?.lastMsg?.imageUrl && (
+                          <p className=" flex gap-1 items-center m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px]">
+                            {" "}
+                            <FaRegImage size={15} /> Image
+                          </p>
+                        )}
                       </div>
                       {usr?.unmessages !== 0 && (
                         <div className="m-0 mt-[2px] h-5 w-6 rounded-full line-clamp-1 bg-blue-300 text-[10px] grid place-content-center text-white ">

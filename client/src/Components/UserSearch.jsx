@@ -38,7 +38,7 @@ const UserSearch = ({ open, close }) => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search user here..."
               value={search}
-              className=" outline-none w-full h-8 px-2 rounded-md border md:h-10"
+              className=" outline-none w-full  px-2 rounded-md border h-10"
             />
             <button
               onClick={() => searchUserFUn()}

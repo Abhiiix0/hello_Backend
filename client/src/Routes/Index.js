@@ -13,14 +13,14 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "register", element: <RegisterPage /> },
-      {
-        path: "email",
-        element: <CheckEmailPage />,
-      },
-      {
-        path: "password",
-        element: <CheckPasswordPage />,
-      },
+      // {
+      //   path: "email",
+      //   element: <CheckEmailPage />,
+      // },
+      // {
+      //   path: "password",
+      //   element: <CheckPasswordPage />,
+      // },
       {
         path: "login",
         element: <Login />,

@@ -58,6 +58,11 @@ const RegisterPage = () => {
   return (
     <div className=" h-screen bg-blue-100 flex items-center justify-center p-8">
       <div className="flex w-full h-[530px] max-w-5xl border bg-gray-100 rounded-lg shadow-lg">
+        <img
+          src={hellowd}
+          alt="Messaging Illustration"
+          className="w-28 mt-2 ml-2  sm:hidden absolute left-0 top-0 mx-auto fill-transparent"
+        />
         {/* Left Side with Messaging Design */}
         <div className="hidden md:flex w-1/2 bg-gradient-to-br from-[#46CDCF] to-[#2B8A8D] items-center justify-center p-10 rounded-l-lg">
           <div className="text-white text-center space-y-6">
@@ -76,7 +81,7 @@ const RegisterPage = () => {
         </div>
 
         {/* Right Side with Form */}
-        <div className="flex w-full md:w-1/2 items-center justify-center bg-white p-8 rounded-r-lg">
+        <div className="flex w-full md:w-1/2 items-center justify-center bg-white p-8 rounded-lg sm:rounded-r-lg">
           <div className="w-full max-w-md">
             <div className="text-center mb-6">
               {/* Replace the src below with your actual logo */}

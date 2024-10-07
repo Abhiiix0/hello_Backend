@@ -73,7 +73,7 @@ const Home = () => {
       <section className={`bg-white ${!baseofMsg && "hidden"} lg:block`}>
         <Slider />
       </section>
-      <section className={`  ${baseofMsg && "hidden"}`}>
+      <section className={`  ${baseofMsg && "hidden"} `}>
         <Outlet></Outlet>
       </section>
       {baseofMsg && (
