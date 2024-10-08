@@ -36,7 +36,15 @@ io.on("connection", async (socket) => {
 
   socket.on("messagePage", async (userId) => {
     // Check if the provided userId is a valid ObjectId
-
+    // Check if the provided userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      const invalidUserPayload = {
+        message: "Invalid user ID",
+        success: false,
+      };
+      socket.emit("messageUser", invalidUserPayload);
+      return; // Exit early since userId is invalid
+    }
     try {
       const userDetails = await UserModel.findById(userId);
 
