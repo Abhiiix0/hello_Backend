@@ -3,6 +3,7 @@ import getUserDetailsFromToken from "../helper/getUserDetailsFromToken.js";
 async function userDetails(req, res) {
   try {
     const token = req.cookies.token || "";
+    console.log("token", token);
     const user = await getUserDetailsFromToken(token);
     return res.status(200).json({
       message: "User details fetched successfully",
