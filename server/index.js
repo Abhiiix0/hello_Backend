@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotnet from "dotenv";
 import connectDB from "./config/connectDB.js";
-import router from "./routes/index.js";
+import router from "../client/src/routes/index.js";
 import cookieParser from "cookie-parser";
 import { app, server } from "./socket/index.js";
 dotnet.config();
