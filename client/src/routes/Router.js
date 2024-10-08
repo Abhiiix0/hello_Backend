@@ -5,7 +5,7 @@ import Home from "../pages/Home.jsx";
 import MessagePage from "../Components/MessagePage.jsx";
 import Login from "../pages/Login.jsx";
 
-const router = createBrowserRouter([
+const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
@@ -23,4 +23,4 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-export default router;
+export default Router;
