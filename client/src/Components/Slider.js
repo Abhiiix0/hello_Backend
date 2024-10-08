@@ -125,21 +125,21 @@ const Slider = () => {
                 <NavLink
                   to={`/user/` + usr?.userDetails?._id}
                   key={usr?.userDetails?._id}
-                  className=" border-b-[1px] hover:border hover:border-[#c4efef] hover:rounded-md h-14 items-center px-2 flex w-full"
+                  className=" border-b-[1px] hover:border transition-colors duration-300 transition-all hover:border-[#c4efef] hover:bg-[#e6f7f7] hover:rounded-md h-14 items-center px-2 flex w-full"
                 >
                   <div className=" flex gap-2 w-full items-center ">
-                    <div className=" w-8   h-8">
+                    <div className=" w-10   h-10">
                       {usr?.userDetails?.profile_img === "" ? (
                         // <CgProfile name="User Name" glyphName={"ab"} size={25} />
-                        <p className=" bg-yellow-100  border-black  w-8 grid place-content-center capitalize h-8 rounded-full">
+                        <p className=" bg-yellow-100  border-black  grid place-content-center capitalize h-10 w-10 rounded-full">
                           {" "}
                           {usr.receiver.name.slice(0, 2)}
                         </p>
                       ) : (
-                        <div className=" w-8 h-8 rounded-full ">
+                        <div className=" w-10 h-10  rounded-full ">
                           <img
                             src={usr?.userDetails?.profile_img}
-                            className=" w-8 h-8 rounded-full "
+                            className=" w-10 h-10 rounded-full "
                             alt=""
                           />
                         </div>
@@ -150,7 +150,7 @@ const Slider = () => {
                         <p className=" m-0 text-ellipsis line-clamp-1 font-normal ">
                           {usr?.userDetails?.name}
                         </p>
-                        <p className="m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
+                        <p className=" mt-[-2px] m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
                           {usr?.lastMsg?.text}
                         </p>
                         {usr?.lastMsg?.imageUrl && (
