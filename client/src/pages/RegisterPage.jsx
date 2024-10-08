@@ -6,6 +6,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import uploadImg from "../cloudinary/uploadFile";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
+import { Input } from "antd";
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -95,39 +96,39 @@ const RegisterPage = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Username
                 </label>
-                <input
+                <Input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
-                <input
+                <Input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <input
-                  type="password"
+                <Input.Password
+                  // type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
               {/* Profile Picture Upload */}

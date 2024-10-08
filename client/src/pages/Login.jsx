@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { toast, Toaster } from "react-hot-toast";
 import { setToken } from "../redux/userSlice";
+import { Input } from "antd";
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,26 +89,34 @@ const Login = () => {
                 <label className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
-                <input
+                <Input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <input
+                {/* <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
+                /> */}
+                <Input.Password
+                  value={formData.password}
+                  onChange={handleChange}
+                  name="password"
+                  required
+                  // placeholder="input password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
 

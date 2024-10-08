@@ -28,6 +28,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "build": {
+    "src": "client/src",
+    "use": "@vercel/node"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
