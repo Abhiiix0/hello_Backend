@@ -123,7 +123,7 @@ const Slider = () => {
             <div className="  w-full h-full flex flex-col gap-1">
               {allUser?.map((usr) => (
                 <NavLink
-                  to={`/` + usr?.userDetails?._id}
+                  to={`/user/` + usr?.userDetails?._id}
                   key={usr?.userDetails?._id}
                   className=" border-b-[1px] hover:border hover:border-[#c4efef] hover:rounded-md h-14 items-center px-2 flex w-full"
                 >

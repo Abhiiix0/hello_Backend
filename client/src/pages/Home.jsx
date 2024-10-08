@@ -27,7 +27,7 @@ const Home = () => {
         url,
         withCredentials: true,
       });
-      console.log(res);
+      // console.log(res);
       if (res?.data?.data?.logout) {
         // console.log("hii");
         // toast.error(res?.data.data.message);
@@ -38,7 +38,7 @@ const Home = () => {
       // toast.success(res?.data?.message);
       dispatch(setUser(res?.data?.data));
 
-      console.log("by");
+      // console.log("by");
     } catch (error) {
       toast.error(error?.response?.data?.message || "something went wrong");
     }
@@ -54,7 +54,7 @@ const Home = () => {
       },
     });
     socketConnection.on("onlineUser", (data) => {
-      console.log(data);
+      // console.log(data);
       dispatch(setOnlineUser(data));
     });
 
@@ -65,9 +65,9 @@ const Home = () => {
     };
   }, []);
 
-  console.log(location);
+  // console.log(location);
   const baseofMsg = location.pathname === "/";
-  console.log(baseofMsg);
+  // console.log(baseofMsg);
   return (
     <div className=" grid lg:grid-cols-[300px,1fr] h-screen max-h-screen">
       <section className={`bg-white ${!baseofMsg && "hidden"} lg:block`}>

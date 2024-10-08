@@ -57,7 +57,7 @@ const UserSearch = ({ open, close }) => {
                 <div className=" flex flex-col gap-2 h-[250px] mt-3 overflow-y-scroll">
                   {srchUsers?.map((u, i) => (
                     <Link
-                      to={"/" + u?._id}
+                      to={"/user/" + u?._id}
                       key={i}
                       className=" flex gap-2 px-2 items-center border w-full h-16 md:h-16 bg-slate-100 hover:bg-slate-200 cursor-pointer rounded-md"
                     >

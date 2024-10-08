@@ -30,7 +30,7 @@ const Login = () => {
         url,
         data: formData,
       });
-      console.log("login page", res);
+      // console.log("login page", res);
       if (res.status === 200) {
         dispatch(setToken(res?.data?.token));
         localStorage.setItem("token", res?.data?.token);
@@ -44,7 +44,7 @@ const Login = () => {
     } catch (error) {
       //   console.log(error);
       if (error?.status !== 200) {
-        toast.error(error?.response?.data?.message);
+        toast.error(error?.response?.data?.message || "Something went wrrong");
       }
     }
   };

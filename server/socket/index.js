@@ -7,6 +7,7 @@ import ConversationModel from "../model/ConversationModel.js";
 
 import getConversations from "../helper/getConversation.js";
 import Messagemodel from "../model/MessageModel.js";
+import mongoose from "mongoose";
 
 const app = express();
 
@@ -34,19 +35,35 @@ io.on("connection", async (socket) => {
   io.emit("onlineUser", Array.from(onlineUser));
 
   socket.on("messagePage", async (userId) => {
-    // console.log("userId", userId);
-    const userDetails = await UserModel.findById(userId);
-    // console.log("userdetails", userDetails);
-    const payload = {
-      _id: userDetails?._id,
-      name: userDetails?.name,
-      profile_img: userDetails?.profile_img,
-      email: userDetails?.email,
-      online: onlineUser?.has(userId),
-    };
+    // Check if the provided userId is a valid ObjectId
 
-    socket.emit("messageUser", payload);
+    try {
+      const userDetails = await UserModel.findById(userId);
 
+      if (!userDetails) {
+        const payload = {
+          message: "user not found",
+          success: false,
+        };
+        socket.emit("messageUser", payload);
+      } else {
+        const payload = {
+          _id: userDetails?._id,
+          name: userDetails?.name,
+          profile_img: userDetails?.profile_img,
+          email: userDetails?.email,
+          online: onlineUser?.has(userId),
+        };
+
+        socket.emit("messageUser", payload);
+      }
+    } catch (error) {
+      const payload = {
+        message: "user not found",
+        success: false,
+      };
+      socket.emit("messageUser", payload);
+    }
     //
     const getConversationmsg = await ConversationModel.findOne({
       $or: [

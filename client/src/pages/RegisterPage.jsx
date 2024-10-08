@@ -34,10 +34,10 @@ const RegisterPage = () => {
     e.preventDefault();
     // console.log(formData); // Replace this with your registration logic
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
-    console.log(process.env.REACT_APP_BACKEND_URL);
+    // console.log(process.env.REACT_APP_BACKEND_URL);
     try {
       const res = await axios.post(url, formData);
-      console.log(res);
+      // console.log(res);
       if (res.status === 201) {
         toast.success(res?.data?.message);
         setFormData({
@@ -51,7 +51,7 @@ const RegisterPage = () => {
     } catch (error) {
       //   console.log(error);
       if (error.status !== 200) {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || "Something went wrrong");
       }
     }
   };

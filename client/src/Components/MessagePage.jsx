@@ -6,7 +6,7 @@ import bgg from "./hellochattingbg.jpg";
 import bgg2 from "./bg.jpg";
 import { IoMdAttach } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa6";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaRegImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa";
@@ -14,6 +14,7 @@ import moment from "moment";
 import uploadImg from "../cloudinary/uploadFile";
 import { Modal, Spin } from "antd";
 const MessagePage = () => {
+  const navigate = useNavigate();
   const userId = useParams();
   const [userData, setuserData] = useState({
     name: "",
@@ -84,6 +85,9 @@ const MessagePage = () => {
       socketConnection.emit("seen", userId.userId);
 
       socketConnection.on("messageUser", (data) => {
+        if (data.success === false) {
+          return navigate("pageNotFound");
+        }
         setuserData(data);
       });
       socketConnection.on("prvMsg", (data) => {

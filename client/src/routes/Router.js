@@ -4,6 +4,7 @@ import RegisterPage from "../pages/RegisterPage.jsx";
 import Home from "../pages/Home.jsx";
 import MessagePage from "../Components/MessagePage.jsx";
 import Login from "../pages/Login.jsx";
+import NotFoundPage from "../pages/NotFoundPage.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -18,8 +19,9 @@ const Router = createBrowserRouter([
       {
         path: "",
         element: <Home />,
-        children: [{ path: ":userId", element: <MessagePage /> }],
+        children: [{ path: "/user/:userId", element: <MessagePage /> }],
       },
+      { path: "*", element: <NotFoundPage /> },
     ],
   },
 ]);
