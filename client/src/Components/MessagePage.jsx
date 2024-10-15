@@ -99,8 +99,10 @@ const MessagePage = () => {
         }
       });
       socketConnection.on("message", (data) => {
-        // console.log("conversation", data);
-        setAllMessages([...data]);
+        console.log("conversation", data);
+        if (userId.userId === data[0].msgBySender) {
+          setAllMessages([...data]);
+        }
         // currentMsg?.current
       });
     }
