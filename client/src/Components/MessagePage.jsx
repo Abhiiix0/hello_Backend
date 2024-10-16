@@ -138,11 +138,11 @@ const MessagePage = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${bgg2})`,
+        // backgroundImage: `url(${bgg2})`,
 
         backgroundPosition: "center", // Align logos
       }}
-      className=" relative flex flex-col items-end justify-between  object-cover  border h-full"
+      className=" relative flex flex-col items-end justify-between  object-cover  border h-[100vh]"
     >
       <header className=" bg-white w-full flex items-center px-2 h-[59px]">
         <div className=" flex gap-3 items-center">
@@ -152,7 +152,7 @@ const MessagePage = () => {
           <div>
             {userData?.profile_img === "" ? (
               // <CgProfile name="User Name" glyphName={"ab"} size={25} />
-              <p className=" bg-yellow-100   border-[1px] w-10 grid place-content-center capitalize h-10 rounded-full">
+              <p className=" bg-yellow-100 cursor-default  border-[1px] w-10 grid place-content-center capitalize h-10 rounded-full">
                 {" "}
                 {userData?.name.slice(0, 2)}
               </p>
@@ -183,7 +183,7 @@ const MessagePage = () => {
       </header>
 
       <main className=" h-[81vh] mb-1   w-full mt-1">
-        <div className=" h-full mb-5 overflow-y-scroll flex flex-col gap-1 px-2 w-full">
+        <div className=" h-full mb-5 overflow-y-scroll overflow-hidden flex flex-col gap-1 px-2 w-full">
           {AllMessages?.map((mg, i) => (
             <div
               ref={currentMsg}
@@ -195,15 +195,17 @@ const MessagePage = () => {
             >
               <p className=" m-0 font-medium text-[15px]">{mg?.text}</p>
               {mg?.imageUrl && (
-                <div className=" h-full relative group pt-1 pb-0 ">
+                <div className="  w-[280px] relative group pt-2 pb-0 ">
                   <img
                     src={mg?.imageUrl}
                     alt="imgsend"
-                    className="  w-[250px] pt-1 rounded-md object-contain"
+                    className=" w-full rounded-md object-contain"
                   />
                   <button
                     onClick={() => handlePreview()}
-                    className=" place-content-center overflow-hidden  absolute hidden group-hover:block right-7 transition-opacity duration-300 bottom-4 border opacity-40 bg-white rounded-sm h-5 w-5"
+                    className={`${
+                      mg?.msgBySender === usser?._id ? " left-7" : " right-7"
+                    } place-content-center overflow-hidden  absolute hidden group-hover:block transition-opacity duration-300 bottom-1 border opacity-40 bg-white rounded-sm h-5 w-5`}
                   >
                     <div className=" hidden">
                       <Image
@@ -223,16 +225,18 @@ const MessagePage = () => {
                   </button>
                   <button
                     onClick={() => download(mg?.imageUrl)}
-                    className=" absolute hidden group-hover:block right-1 transition-opacity duration-300 bottom-4 border opacity-40 bg-white rounded-sm h-5 w-5"
+                    className={`absolute hidden group-hover:block  ${
+                      mg?.msgBySender === usser?._id ? " left-1" : " right-1"
+                    } transition-opacity duration-300 bottom-1 border opacity-40 bg-white rounded-sm h-5 w-5`}
                   >
                     <MdOutlineFileDownload color="black" />
                   </button>
                 </div>
               )}
               <p
-                className={` text-[10px] mt-[-4px] m-0 ${
-                  mg?.msgBySender === usser?._id && " text-right"
-                }`}
+                className={` text-[10px]  p-0 m-0 ${
+                  mg?.imageUrl ? "mb-[-12px] mt-[2px]" : "mt-[-2px] mb-[2px]"
+                }  ${mg?.msgBySender === usser?._id && " text-right"}`}
               >
                 {moment(mg?.createdAt).format("hh:mm")}
               </p>
