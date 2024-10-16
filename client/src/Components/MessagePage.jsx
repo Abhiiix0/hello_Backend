@@ -152,7 +152,7 @@ const MessagePage = () => {
       }}
       className=" relative flex flex-col items-end justify-between  object-cover  border h-[100vh]"
     >
-      <header className=" bg-white w-full flex items-center px-2 h-[59px]">
+      <header className=" bg-white w-full flex items-center px-2 h-[71px]">
         <div className=" flex gap-3 items-center">
           <Link to="/">
             <FaChevronLeft size={15} className=" lg:hidden" />
