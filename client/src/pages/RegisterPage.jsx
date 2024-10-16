@@ -46,6 +46,7 @@ const RegisterPage = () => {
           password: "",
           profile_img: "",
         });
+        setPreview(null);
         // navigate("/login");
       }
     } catch (error) {

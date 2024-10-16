@@ -135,9 +135,6 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
 
-      // console.log("sender", data.sender);
-      // console.log("receiver", data.receiver);
-
       io.to(data.receiver).emit("message", getConversationmsg.messages || []);
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
 
@@ -174,9 +171,6 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
 
-      // console.log("sender", data.sender);
-      // console.log("receiver", data.receiver);
-
       io.to(data.receiver).emit("message", getConversationmsg.messages || []);
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
 
@@ -187,12 +181,9 @@ io.on("connection", async (socket) => {
       io.to(data.receiver).emit("alluserChat", coversationsReceivers);
       io.to(data.sender).emit("alluserChat", coversationsSenders);
     }
-    // console.log("userSend Msg", data);
-    // console.log("coversation", getConversationmsg);
   });
 
   socket.on("sidebar", async (data) => {
-    // console.log("sidebar", data);
     const coversationss = await getConversations(data);
     socket.emit("alluserChat", coversationss);
   });
