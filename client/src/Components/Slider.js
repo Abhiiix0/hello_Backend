@@ -121,10 +121,11 @@ const Slider = () => {
         <div className="  h-[calc(100vh-60px)] p-1 w-full">
           {allUser?.length !== 0 ? (
             <div className="  w-full h-full flex flex-col gap-1">
-              {allUser?.map((usr) => (
+              {allUser?.map((usr, i) => (
                 <NavLink
+                  // key={i}
                   to={`/user/` + usr?.userDetails?._id}
-                  key={usr?.userDetails?._id}
+                  key={usr?.userDetails?._id || i}
                   className=" border-b-[1px] hover:border transition-colors duration-300 transition-all hover:border-[#c4efef] hover:bg-[#e6f7f7] hover:rounded-md h-14 items-center px-2 flex w-full"
                 >
                   <div className=" flex gap-2 w-full items-center ">
@@ -133,7 +134,7 @@ const Slider = () => {
                         // <CgProfile name="User Name" glyphName={"ab"} size={25} />
                         <p className=" bg-yellow-100  border-black  grid place-content-center capitalize h-10 w-10 rounded-full">
                           {" "}
-                          {usr.receiver.name.slice(0, 2)}
+                          {usr.userDetails.name.slice(0, 2)}
                         </p>
                       ) : (
                         <div className=" w-10 h-10  rounded-full ">
