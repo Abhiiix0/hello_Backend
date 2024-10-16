@@ -32,9 +32,11 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData); // Replace this with your registration logic
+    if (formData?.password?.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
-    // console.log(process.env.REACT_APP_BACKEND_URL);
     try {
       const res = await axios.post(url, formData);
       // console.log(res);
@@ -104,6 +106,8 @@ const RegisterPage = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
+                  // autoComplete={false}
+
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg "
                 />
               </div>
