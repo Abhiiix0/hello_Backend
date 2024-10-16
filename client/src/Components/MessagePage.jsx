@@ -190,8 +190,8 @@ const MessagePage = () => {
         </div>
       </header>
 
-      <main className=" h-[81vh] mb-1   w-full mt-1">
-        <div className=" h-full mb-5 overflow-y-scroll overflow-hidden flex flex-col gap-1 px-2 w-full">
+      <main className=" h-full mb-2  overflow-hidden   w-full mt-1">
+        <div className=" h-full overflow-y-scroll overflow-hidden flex flex-col gap-1 px-2 w-full">
           {AllMessages?.map((mg, i) => (
             <div
               ref={currentMsg}
