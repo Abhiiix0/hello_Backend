@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
-import logo from "../assets/hellobw.png";
-
-import bgg from "./hellochattingbg.jpg";
 import bgg2 from "./bg.jpg";
 import { IoMdAttach } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa6";
@@ -10,9 +7,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaRegImage } from "react-icons/fa6";
 import { FaVideo } from "react-icons/fa";
+import { MdOutlineFileDownload } from "react-icons/md";
+import { IoEyeOutline } from "react-icons/io5";
 import moment from "moment";
 import uploadImg from "../cloudinary/uploadFile";
-import { Modal, Spin } from "antd";
+import { Image, Modal, Spin } from "antd";
 const MessagePage = () => {
   const navigate = useNavigate();
   const userId = useParams();
@@ -110,7 +109,32 @@ const MessagePage = () => {
       });
     }
   }, [socketConnection, userId.userId, usser]);
+  const [visible, setVisible] = useState(false);
 
+  const handlePreview = () => {
+    setVisible(true);
+  };
+  // to download img from link
+  const download = (e) => {
+    // console.log(e.target.href);
+    fetch(e, {
+      method: "GET",
+      headers: {},
+    })
+      .then((response) => {
+        response.arrayBuffer().then(function (buffer) {
+          const url = window.URL.createObjectURL(new Blob([buffer]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `${Date.now()}.jpg`); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div
       style={{
@@ -133,11 +157,16 @@ const MessagePage = () => {
                 {userData?.name.slice(0, 2)}
               </p>
             ) : (
-              <img
-                src={userData?.profile_img}
-                className="w-10 grid place-content-center capitalize h-10 rounded-full "
-                alt=""
-              />
+              <div className="w-10 overflow-hidden border grid place-content-center capitalize h-10 cursor-pointer rounded-full ">
+                <Image
+                  src={userData?.profile_img}
+                  // className="w-10 grid place-content-center capitalize h-10 rounded-full "
+                  // alt=""
+                  preview={{
+                    mask: null, // This hides the "Preview" text on hover
+                  }}
+                />
+              </div>
             )}
           </div>
           <div className=" ">
@@ -165,14 +194,39 @@ const MessagePage = () => {
               }`}
             >
               <p className=" m-0 font-medium text-[15px]">{mg?.text}</p>
-              {/* <p className=" m-0 font-medium text-[15px]"></p> */}
               {mg?.imageUrl && (
-                <div className=" h-full  p-2 pb-0 ">
+                <div className=" h-full relative group pt-1 pb-0 ">
                   <img
                     src={mg?.imageUrl}
                     alt="imgsend"
-                    className=" w-[250px] pt-1 rounded-md object-contain"
+                    className="  w-[250px] pt-1 rounded-md object-contain"
                   />
+                  <button
+                    onClick={() => handlePreview()}
+                    className=" place-content-center overflow-hidden  absolute hidden group-hover:block right-7 transition-opacity duration-300 bottom-4 border opacity-40 bg-white rounded-sm h-5 w-5"
+                  >
+                    <div className=" hidden">
+                      <Image
+                        src={mg?.imageUrl}
+                        className="w-full  absolute bottom-[20px] h-full "
+                        // alt=""
+                        width={1}
+                        preview={{
+                          visible, // Control the visibility of the preview modal
+                          onVisibleChange: (vis) => setVisible(vis),
+                        }}
+                      />
+                    </div>
+                    <div className=" w-full h-full grid place-content-center">
+                      <IoEyeOutline size={14} color="black" />
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => download(mg?.imageUrl)}
+                    className=" absolute hidden group-hover:block right-1 transition-opacity duration-300 bottom-4 border opacity-40 bg-white rounded-sm h-5 w-5"
+                  >
+                    <MdOutlineFileDownload color="black" />
+                  </button>
                 </div>
               )}
               <p
