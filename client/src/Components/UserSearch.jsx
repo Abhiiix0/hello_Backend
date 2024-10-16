@@ -19,7 +19,7 @@ const UserSearch = ({ open, close }) => {
         data: { search: search },
         withCredentials: true,
       });
-      console.log(res);
+      // console.log(res);
       setsrchUsers(res?.data?.user);
       setisLoading(false);
     } catch (error) {

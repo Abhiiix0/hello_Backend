@@ -46,7 +46,7 @@ const Slider = () => {
       // console.log("sidebar", user?._id);
       socketConnection.emit("sidebar", user._id);
       socketConnection.on("alluserChat", (data) => {
-        console.log("alluserChat", data);
+        // console.log("alluserChat", data);
 
         const conversationuserData = data?.map((convoUser) => {
           if (convoUser?.sender?._id === convoUser?.receiver?._id) {
@@ -66,7 +66,7 @@ const Slider = () => {
             };
           }
         });
-        console.log("conversationuserData", conversationuserData);
+        // console.log("conversationuserData", conversationuserData);
         setallUser(conversationuserData);
       });
     }

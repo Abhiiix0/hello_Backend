@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
-import bgg2 from "./bg.jpg";
+import EmojiPicker from "emoji-picker-react";
 import { IoMdAttach } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -11,8 +11,15 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import moment from "moment";
 import uploadImg from "../cloudinary/uploadFile";
-import { Image, Modal, Spin } from "antd";
+import { Button, Image, Modal, Spin } from "antd";
+import toast from "react-hot-toast";
 const MessagePage = () => {
+  const [chosenEmoji, setChosenEmoji] = useState(null);
+
+  const onEmojiClick = (event, emojiObject) => {
+    setChosenEmoji(emojiObject);
+    // console.log(emojiObject);
+  };
   const navigate = useNavigate();
   const userId = useParams();
   const [userData, setuserData] = useState({
@@ -31,10 +38,10 @@ const MessagePage = () => {
   const [uploaderLoading, setuploaderLoading] = useState(false);
   const [imgsend, setimgsend] = useState("");
   const sendMsg = async () => {
-    console.log("send call");
+    // console.log("send call");
     if (msg || imgsend) {
       if (socketConnection) {
-        console.log("img url", imgsend);
+        // console.log("img url", imgsend);
         await socketConnection.emit("NewMessage", {
           sender: usser._id,
           receiver: userId.userId,
@@ -68,7 +75,7 @@ const MessagePage = () => {
     }
   };
   useEffect(() => {
-    console.log("yo1");
+    // console.log("yo1");
     if (currentMsg.current) {
       console.log("yo");
       currentMsg?.current?.scrollIntoView({
@@ -78,7 +85,7 @@ const MessagePage = () => {
   }, [AllMessages]);
   useEffect(() => {
     if (socketConnection) {
-      console.log("run");
+      // console.log("run");
       socketConnection.emit("messagePage", userId.userId);
 
       socketConnection.emit("seen", userId.userId);
@@ -90,7 +97,7 @@ const MessagePage = () => {
         setuserData(data);
       });
       socketConnection.on("prvMsg", (data) => {
-        console.log("prvMsg", data);
+        // console.log("prvMsg", data);
         if (data) {
           setAllMessages([...data]);
         } else {
@@ -98,7 +105,7 @@ const MessagePage = () => {
         }
       });
       socketConnection.on("message", (data) => {
-        console.log("conversation", data);
+        // console.log("conversation", data);
         if (
           userId.userId === data[0].msgBySender
           // userId.userId === userId.userId
@@ -132,7 +139,8 @@ const MessagePage = () => {
         });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
+        toast.error("Faild to logout");
       });
   };
   return (
@@ -295,6 +303,7 @@ const MessagePage = () => {
       </Modal>
       <footer className=" p-2 pt-0 w-full flex items-center gap-2 justify-between">
         <div className=" shadow-lg flex gap-2 px-2 pl-4 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
+          {/* <EmojiPicker /> */}
           <input
             type="text"
             placeholder="Type your message..."
