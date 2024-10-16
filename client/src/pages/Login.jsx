@@ -22,7 +22,7 @@ const Login = () => {
     e.preventDefault();
     // console.log(formData); // Replace this with your registration logic
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/login`;
-    console.log(process.env.REACT_APP_BACKEND_URL);
+    // console.log(process.env.REACT_APP_BACKEND_URL);
     try {
       const res = await axios({
         method: "post",

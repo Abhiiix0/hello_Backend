@@ -37,14 +37,15 @@ io.on("connection", async (socket) => {
   socket.on("messagePage", async (userId) => {
     // Check if the provided userId is a valid ObjectId
     // Check if the provided userId is a valid ObjectId
-    if (!mongoose.Types.ObjectId.isValid(userId)) {
-      const invalidUserPayload = {
-        message: "Invalid user ID",
-        success: false,
-      };
-      socket.emit("messageUser", invalidUserPayload);
-      return; // Exit early since userId is invalid
-    }
+    console.log("userIdssss", JSON.stringify(userId).length);
+    // if (JSON.stringify(userId)?.length >= 25) {
+    //   const invalidUserPayload = {
+    //     message: "Invalid user ID",
+    //     success: false,
+    //   };
+    //   socket.emit("messageUser", invalidUserPayload);
+    //   return; // Exit early since userId is invalid
+    // }
     try {
       const userDetails = await UserModel.findById(userId);
 
@@ -72,6 +73,7 @@ io.on("connection", async (socket) => {
       };
       socket.emit("messageUser", payload);
     }
+
     //
     const getConversationmsg = await ConversationModel.findOne({
       $or: [
@@ -90,7 +92,7 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("NewMessage", async (data) => {
-    console.log("userSendData", data);
+    // console.log("userSendData", data);
     // search if conversation is available or not
     const coversation = await ConversationModel.findOne({
       $or: [
@@ -119,7 +121,7 @@ io.on("connection", async (socket) => {
       // update conversation
       const updateConversation = await ConversationModel.updateOne(
         {
-          _id: coversation?._id,
+          _id: conversation?._id,
         },
         { $push: { messages: saveMessage?._id } }
       );
@@ -133,8 +135,8 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
 
-      console.log("sender", data.sender);
-      console.log("receiver", data.receiver);
+      // console.log("sender", data.sender);
+      // console.log("receiver", data.receiver);
 
       io.to(data.receiver).emit("message", getConversationmsg.messages || []);
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
@@ -172,8 +174,8 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
 
-      console.log("sender", data.sender);
-      console.log("receiver", data.receiver);
+      // console.log("sender", data.sender);
+      // console.log("receiver", data.receiver);
 
       io.to(data.receiver).emit("message", getConversationmsg.messages || []);
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
@@ -190,7 +192,7 @@ io.on("connection", async (socket) => {
   });
 
   socket.on("sidebar", async (data) => {
-    console.log("sidebar", data);
+    // console.log("sidebar", data);
     const coversationss = await getConversations(data);
     socket.emit("alluserChat", coversationss);
   });
@@ -220,7 +222,7 @@ io.on("connection", async (socket) => {
 
   socket.on("disconnect", () => {
     onlineUser.delete(user?.id);
-    console.log("disconnect user", socket.id);
+    // console.log("disconnect user", socket.id);
   });
 });
 

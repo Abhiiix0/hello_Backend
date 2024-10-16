@@ -100,7 +100,10 @@ const MessagePage = () => {
       });
       socketConnection.on("message", (data) => {
         console.log("conversation", data);
-        if (userId.userId === data[0].msgBySender) {
+        if (
+          userId.userId === data[0].msgBySender ||
+          userId.userId === userId.userId
+        ) {
           setAllMessages([...data]);
         }
         // currentMsg?.current
