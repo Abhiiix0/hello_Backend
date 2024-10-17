@@ -100,6 +100,7 @@ const MessagePage = () => {
         //       msg.receiver === currentChatUserId
         //   )
         // ) {
+        console.log(data);
         setAllMessages([...data]); // Update only if the message is from/to the current chat user
         // }
       });
