@@ -29,6 +29,7 @@ const MessagePage = () => {
   const [msg, setmsg] = useState("");
   const [uploaderLoading, setuploaderLoading] = useState(false);
   const [imgsend, setimgsend] = useState("");
+  const [currentChatUserId, setCurrentChatUserId] = useState(userId.userId); // Track the active chat user
   const sendMsg = async () => {
     if (msg || imgsend) {
       if (socketConnection) {
