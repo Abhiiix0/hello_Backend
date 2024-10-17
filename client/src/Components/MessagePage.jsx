@@ -104,7 +104,7 @@ const MessagePage = () => {
         }
       });
     }
-  }, [socketConnection, userId.userId]);
+  }, [socketConnection, userId.userId, usser]);
   const [visible, setVisible] = useState(false);
 
   const handlePreview = () => {
