@@ -93,15 +93,15 @@ const MessagePage = () => {
       });
       socketConnection.on("message", (data) => {
         // setAllMessages([...data]);
-        if (
-          data.some(
-            (msg) =>
-              msg.sender === currentChatUserId ||
-              msg.receiver === currentChatUserId
-          )
-        ) {
-          setAllMessages([...data]); // Update only if the message is from/to the current chat user
-        }
+        // if (
+        //   data.some(
+        //     (msg) =>
+        //       msg.sender === currentChatUserId ||
+        //       msg.receiver === currentChatUserId
+        //   )
+        // ) {
+        setAllMessages([...data]); // Update only if the message is from/to the current chat user
+        // }
       });
     }
   }, [socketConnection, userId.userId, usser]);
