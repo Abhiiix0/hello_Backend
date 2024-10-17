@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LuSendHorizonal } from "react-icons/lu";
-import EmojiPicker from "emoji-picker-react";
 import { IoMdAttach } from "react-icons/io";
 import { FaChevronLeft } from "react-icons/fa6";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -14,12 +13,6 @@ import uploadImg from "../cloudinary/uploadFile";
 import { Button, Image, Modal, Spin } from "antd";
 import toast from "react-hot-toast";
 const MessagePage = () => {
-  const [chosenEmoji, setChosenEmoji] = useState(null);
-
-  const onEmojiClick = (event, emojiObject) => {
-    setChosenEmoji(emojiObject);
-    // console.log(emojiObject);
-  };
   const navigate = useNavigate();
   const userId = useParams();
   const [userData, setuserData] = useState({
@@ -31,14 +24,12 @@ const MessagePage = () => {
   const socketConnection = useSelector((state) => state.user.socketConnection);
   const usser = useSelector((state) => state.user);
   const [AllMessages, setAllMessages] = useState([]);
-  // console.log("userId", userId.userId);
   const [imguploaderModal, setimguploaderModal] = useState(false);
   const [openOption, setopenOption] = useState(false);
   const [msg, setmsg] = useState("");
   const [uploaderLoading, setuploaderLoading] = useState(false);
   const [imgsend, setimgsend] = useState("");
   const sendMsg = async () => {
-    // console.log("send call");
     if (msg || imgsend) {
       if (socketConnection) {
         // console.log("img url", imgsend);
@@ -75,9 +66,7 @@ const MessagePage = () => {
     }
   };
   useEffect(() => {
-    // console.log("yo1");
     if (currentMsg.current) {
-      console.log("yo");
       currentMsg?.current?.scrollIntoView({
         behavior: "smooth",
       });
@@ -85,11 +74,8 @@ const MessagePage = () => {
   }, [AllMessages]);
   useEffect(() => {
     if (socketConnection) {
-      // console.log("run");
       socketConnection.emit("messagePage", userId.userId);
-
       socketConnection.emit("seen", userId.userId);
-
       socketConnection.on("messageUser", (data) => {
         if (data.success === false) {
           return navigate("pageNotFound");
@@ -105,14 +91,16 @@ const MessagePage = () => {
         }
       });
       socketConnection.on("message", (data) => {
-        // console.log("conversation", data);
-        // if (
-        //   userId.userId === data[0].msgBySender
-        //   // userId.userId === userId.userId
-        // ) {
-        // }
-        setAllMessages([...data]);
-        // currentMsg?.current
+        // setAllMessages([...data]);
+        if (
+          data.some(
+            (msg) =>
+              msg.sender === currentChatUserId ||
+              msg.receiver === currentChatUserId
+          )
+        ) {
+          setAllMessages([...data]); // Update only if the message is from/to the current chat user
+        }
       });
     }
   }, [socketConnection, userId.userId]);
@@ -303,7 +291,6 @@ const MessagePage = () => {
       </Modal>
       <footer className=" p-2 pt-0 w-full flex items-center gap-2 justify-between">
         <div className=" shadow-lg flex gap-2 px-2 pl-4 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
-          {/* <EmojiPicker /> */}
           <input
             type="text"
             placeholder="Type your message..."
