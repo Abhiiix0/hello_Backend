@@ -71,7 +71,7 @@ const MessagePage = () => {
   };
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      sendMsg();
+      sendMsg("");
     }
   };
   useEffect(() => {
@@ -106,16 +106,16 @@ const MessagePage = () => {
       });
       socketConnection.on("message", (data) => {
         // console.log("conversation", data);
-        if (
-          userId.userId === data[0].msgBySender
-          // userId.userId === userId.userId
-        ) {
-          setAllMessages([...data]);
-        }
+        // if (
+        //   userId.userId === data[0].msgBySender
+        //   // userId.userId === userId.userId
+        // ) {
+        // }
+        setAllMessages([...data]);
         // currentMsg?.current
       });
     }
-  }, [socketConnection, userId.userId, usser]);
+  }, [socketConnection, userId.userId]);
   const [visible, setVisible] = useState(false);
 
   const handlePreview = () => {

@@ -36,7 +36,6 @@ io.on("connection", async (socket) => {
 
   socket.on("messagePage", async (userId) => {
     // Check if the provided userId is a valid ObjectId
-    // Check if the provided userId is a valid ObjectId
     console.log("userIdssss", JSON.stringify(userId).length);
     // if (JSON.stringify(userId)?.length >= 25) {
     //   const invalidUserPayload = {
