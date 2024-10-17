@@ -92,17 +92,20 @@ const MessagePage = () => {
         }
       });
       socketConnection.on("message", (data) => {
-        // setAllMessages([...data]);
-        // if (
-        //   data.some(
-        //     (msg) =>
-        //       msg.sender === currentChatUserId ||
-        //       msg.receiver === currentChatUserId
-        //   )
-        // ) {
-        console.log(data);
-        setAllMessages([...data]); // Update only if the message is from/to the current chat user
-        // }
+        if (
+          data.some(
+            (msg) =>
+              (msg.msgBySender === currentChatUserId &&
+                msg.msgByReceiver === usser._id) ||
+              (msg.msgBySender === usser._id &&
+                msg.msgByReceiver === currentChatUserId)
+          )
+        ) {
+          console.log(data[0]);
+          console.log(userId.userId);
+          console.log(data);
+          setAllMessages([...data]); // Update only if the message is from/to the current chat user
+        }
       });
     }
   }, [socketConnection, userId.userId, usser]);
@@ -130,7 +133,7 @@ const MessagePage = () => {
       })
       .catch((err) => {
         // console.log(err);
-        toast.error("Faild to logout");
+        toast.error("Faild to Download");
       });
   };
   return (

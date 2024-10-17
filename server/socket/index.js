@@ -114,6 +114,7 @@ io.on("connection", async (socket) => {
         imageUrl: data?.imageUrl,
         videoUrl: "",
         msgBySender: data.sender,
+        msgByReceiver: data?.receiver,
       });
       const saveMessage = await message.save();
 
@@ -150,6 +151,7 @@ io.on("connection", async (socket) => {
         imageUrl: data?.imageUrl,
         videoUrl: "",
         msgBySender: data.sender,
+        msgByReceiver: data?.receiver,
       });
       const saveMessage = await message.save();
 
@@ -169,7 +171,7 @@ io.on("connection", async (socket) => {
       })
         .populate("messages")
         .sort({ updatedAt: -1 });
-
+      console.log(getConversationmsg);
       io.to(data.receiver).emit("message", getConversationmsg.messages || []);
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
 
