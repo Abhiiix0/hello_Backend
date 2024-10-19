@@ -126,7 +126,7 @@ const Slider = () => {
                   // key={i}
                   to={`/user/` + usr?.userDetails?._id}
                   key={usr?.userDetails?._id || i}
-                  className=" border-b-[1px] hover:border transition-colors duration-300 transition-all hover:border-[#c4efef] hover:bg-[#e6f7f7] hover:rounded-md h-14 items-center px-2 flex w-full"
+                  className=" border-b-[1px] hover:border overflow-hidden transition-colors duration-300 transition-all hover:border-[#c4efef] hover:bg-[#e6f7f7] hover:rounded-md h-14 items-center px-2 flex w-full"
                 >
                   <div className=" flex gap-2 w-full items-center ">
                     <div className=" w-10   h-10">
@@ -148,10 +148,10 @@ const Slider = () => {
                     </div>
                     <div className=" flex w-full justify-between items-start gap-2">
                       <div className=" flex flex-col  w-full">
-                        <p className=" m-0 text-ellipsis line-clamp-1 font-normal ">
+                        <p className=" m-0 text-ellipsis overflow-hidden line-clamp-1 font-normal ">
                           {usr?.userDetails?.name}
                         </p>
-                        <p className=" mt-[-2px] m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
+                        <p className=" mt-[-2px] overflow-hidden m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
                           {usr?.lastMsg?.text}
                         </p>
                         {usr?.lastMsg?.imageUrl && (

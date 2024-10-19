@@ -10,11 +10,19 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { IoEyeOutline } from "react-icons/io5";
 import moment from "moment";
 import uploadImg from "../cloudinary/uploadFile";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { Button, Image, Modal, Spin } from "antd";
 import toast from "react-hot-toast";
+import axios from "axios";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import "emoji-mart/css/emoji-mart.css"; // Emoji picker styles
+
 const MessagePage = () => {
+  // new Picker({ data });
+
   const navigate = useNavigate();
-  const userId = useParams();
+  const { userId } = useParams();
   const [userData, setuserData] = useState({
     name: "",
     profile_img: "",
@@ -29,14 +37,14 @@ const MessagePage = () => {
   const [msg, setmsg] = useState("");
   const [uploaderLoading, setuploaderLoading] = useState(false);
   const [imgsend, setimgsend] = useState("");
-  const [currentChatUserId, setCurrentChatUserId] = useState(userId.userId); // Track the active chat user
+  const [currentChatUserId, setCurrentChatUserId] = useState(userId); // Track the active chat user
   const sendMsg = async () => {
     if (msg || imgsend) {
       if (socketConnection) {
         // console.log("img url", imgsend);
         await socketConnection.emit("NewMessage", {
           sender: usser._id,
-          receiver: userId.userId,
+          receiver: userId,
           text: msg ? msg : "",
           imageUrl: imgsend,
           videoUrl: "",
@@ -72,11 +80,12 @@ const MessagePage = () => {
         behavior: "smooth",
       });
     }
+    // setCurrentChatUserId(userId);
   }, [AllMessages]);
   useEffect(() => {
     if (socketConnection) {
-      socketConnection.emit("messagePage", userId.userId);
-      socketConnection.emit("seen", userId.userId);
+      socketConnection.emit("messagePage", userId);
+      socketConnection.emit("seen", userId);
       socketConnection.on("messageUser", (data) => {
         if (data.success === false) {
           return navigate("pageNotFound");
@@ -84,36 +93,63 @@ const MessagePage = () => {
         setuserData(data);
       });
       socketConnection.on("prvMsg", (data) => {
-        // console.log("prvMsg", data);
         if (data) {
           setAllMessages([...data]);
         } else {
           setAllMessages([]);
+          console.log("alag user hai");
         }
       });
       socketConnection.on("message", (data) => {
+        console.log(data[0]);
+        console.log(currentChatUserId);
         if (
-          data.some(
-            (msg) =>
-              (msg.msgBySender === currentChatUserId &&
-                msg.msgByReceiver === usser._id) ||
-              (msg.msgBySender === usser._id &&
-                msg.msgByReceiver === currentChatUserId)
-          )
+          data[0].msgBySender === userId ||
+          data[0].msgByReceiver === userId
         ) {
-          console.log(data[0]);
-          console.log(userId.userId);
-          console.log(data);
           setAllMessages([...data]); // Update only if the message is from/to the current chat user
+        } else {
+          // This block can handle notification logic for other chats, if needed
+          console.log("New message from another user, not updating this chat");
         }
       });
     }
-  }, [socketConnection, userId.userId, usser]);
+  }, [socketConnection, userId, usser]);
   const [visible, setVisible] = useState(false);
 
   const handlePreview = () => {
     setVisible(true);
   };
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+
+  const addEmoji = (emoji) => {
+    console.log("Selected Emoji: ", emoji); // Debugging log to check emoji data
+    // setmsg(msg + emoji); // Append the selected emoji to the input value
+    // console.log(emoji.native);
+  };
+  const deleteAllChats = async () => {
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/clear-chats`;
+    const payload = {
+      sender: usser._id,
+      receiver: userId,
+    };
+    try {
+      const response = await axios({
+        method: "post",
+        withCredentials: true,
+        url,
+        data: payload,
+      });
+      console.log(response);
+      if (response?.data?.status) {
+        setAllMessages([]);
+        toast.success(response?.data?.message);
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    }
+  };
+
   // to download img from link
   const download = (e) => {
     // console.log(e.target.href);
@@ -136,6 +172,7 @@ const MessagePage = () => {
         toast.error("Faild to Download");
       });
   };
+  const [optionBtn, setoptionBtn] = useState(true);
   return (
     <div
       style={{
@@ -145,7 +182,7 @@ const MessagePage = () => {
       }}
       className=" relative flex flex-col items-end justify-between  object-cover  border h-[100vh]"
     >
-      <header className=" bg-white w-full flex items-center px-2 h-[71px]">
+      <header className=" bg-white w-full flex items-center justify-between px-2 h-[71px]">
         <div className=" flex gap-3 items-center">
           <Link to="/">
             <FaChevronLeft size={15} className=" lg:hidden" />
@@ -181,6 +218,24 @@ const MessagePage = () => {
             </p>
           </div>
         </div>
+        <div
+          onClick={() => setoptionBtn(!optionBtn)}
+          className=" rounded-full cursor-pointer p-1"
+        >
+          <BsThreeDotsVertical size={22} />
+        </div>
+        <div
+          className={`bg-white overflow-hidden shadow-sm w-fit  h-fit rounded-md transform transition-transform duration-300  ${
+            optionBtn ? " scale-0" : " scale-100"
+          } absolute right-4 top-16`}
+        >
+          <p
+            onClick={() => deleteAllChats()}
+            className=" m-0 w-full px-2 text-sm py-2 cursor-pointer font-medium text-gray-900 hover:bg-slate-100"
+          >
+            Clear chats permanently
+          </p>
+        </div>
       </header>
 
       <main className=" h-full mb-2  overflow-hidden   w-full mt-1">
@@ -198,32 +253,25 @@ const MessagePage = () => {
               {mg?.imageUrl && (
                 <div className="  w-[280px] relative group pt-2 pb-0 ">
                   <img
+                    onClick={() => handlePreview()}
                     src={mg?.imageUrl}
                     alt="imgsend"
-                    className=" w-full rounded-md object-contain"
+                    className=" w-full  rounded-md object-contain"
                   />
-                  <button
-                    onClick={() => handlePreview()}
-                    className={`${
-                      mg?.msgBySender === usser?._id ? " left-7" : " right-7"
-                    } place-content-center overflow-hidden  absolute hidden group-hover:block transition-opacity duration-300 bottom-1 border opacity-40 bg-white rounded-sm h-5 w-5`}
-                  >
-                    <div className=" hidden">
-                      <Image
-                        src={mg?.imageUrl}
-                        className="w-full  absolute bottom-[20px] h-full "
-                        // alt=""
-                        width={1}
-                        preview={{
-                          visible, // Control the visibility of the preview modal
-                          onVisibleChange: (vis) => setVisible(vis),
-                        }}
-                      />
-                    </div>
-                    <div className=" w-full h-full grid place-content-center">
-                      <IoEyeOutline size={14} color="black" />
-                    </div>
-                  </button>
+
+                  <div className=" hidden">
+                    <Image
+                      src={mg?.imageUrl}
+                      className="w-full  absolute bottom-[20px] h-full "
+                      // alt=""
+                      width={1}
+                      preview={{
+                        visible, // Control the visibility of the preview modal
+                        onVisibleChange: (vis) => setVisible(vis),
+                      }}
+                    />
+                  </div>
+
                   <button
                     onClick={() => download(mg?.imageUrl)}
                     className={`absolute hidden group-hover:block  ${
@@ -294,8 +342,20 @@ const MessagePage = () => {
           )}
         </div>
       </Modal>
-      <footer className=" p-2 pt-0 w-full flex items-center gap-2 justify-between">
+      <footer className=" relative p-2 pt-0 w-full flex items-center gap-2 justify-between">
         <div className=" shadow-lg flex gap-2 px-2 pl-4 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
+          {/* Emoji Button */}
+          <button
+            onClick={() => setEmojiPickerOpen(!emojiPickerOpen)} // Toggle Emoji Picker
+            className="cursor-pointer"
+          >
+            😀 {/* Emoji icon can be any of your choice */}
+          </button>
+          {emojiPickerOpen && (
+            <div className="absolute bottom-[60px] bg-red-200 left-4 z-50">
+              <Picker data={data} onEmojiSelect={console.log} />
+            </div>
+          )}
           <input
             type="text"
             placeholder="Type your message..."
