@@ -14,13 +14,9 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Button, Image, Modal, Spin } from "antd";
 import toast from "react-hot-toast";
 import axios from "axios";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import "emoji-mart/css/emoji-mart.css"; // Emoji picker styles
+import EmojiPicker from "emoji-picker-react";
 
 const MessagePage = () => {
-  // new Picker({ data });
-
   const navigate = useNavigate();
   const { userId } = useParams();
   const [userData, setuserData] = useState({
@@ -97,12 +93,12 @@ const MessagePage = () => {
           setAllMessages([...data]);
         } else {
           setAllMessages([]);
-          console.log("alag user hai");
+          // console.log("alag user hai");
         }
       });
       socketConnection.on("message", (data) => {
-        console.log(data[0]);
-        console.log(currentChatUserId);
+        // console.log(data[0]);
+        // console.log(currentChatUserId);
         if (
           data[0].msgBySender === userId ||
           data[0].msgByReceiver === userId
@@ -110,7 +106,7 @@ const MessagePage = () => {
           setAllMessages([...data]); // Update only if the message is from/to the current chat user
         } else {
           // This block can handle notification logic for other chats, if needed
-          console.log("New message from another user, not updating this chat");
+          // console.log("New message from another user, not updating this chat");
         }
       });
     }
@@ -122,10 +118,8 @@ const MessagePage = () => {
   };
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
-  const addEmoji = (emoji) => {
-    console.log("Selected Emoji: ", emoji); // Debugging log to check emoji data
-    // setmsg(msg + emoji); // Append the selected emoji to the input value
-    // console.log(emoji.native);
+  const addEmoji = (event, emojiObject) => {
+    setmsg((prevMsg) => prevMsg + event.emoji); // Append the emoji to the message
   };
   const deleteAllChats = async () => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/clear-chats`;
@@ -140,13 +134,14 @@ const MessagePage = () => {
         url,
         data: payload,
       });
-      console.log(response);
+      // console.log(response);
       if (response?.data?.status) {
-        setAllMessages([]);
         toast.success(response?.data?.message);
+        setAllMessages([]);
+        setoptionBtn(!openOption);
       }
     } catch (error) {
-      toast.error("Something went wrong");
+      // toast.error("Something went wrong");
     }
   };
 
@@ -343,17 +338,17 @@ const MessagePage = () => {
         </div>
       </Modal>
       <footer className=" relative p-2 pt-0 w-full flex items-center gap-2 justify-between">
-        <div className=" shadow-lg flex gap-2 px-2 pl-4 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
+        <div className=" shadow-lg flex gap-2 px-2 pl-3 items-center border h-12 w-full rounded-full overflow-hidden bg-white">
           {/* Emoji Button */}
           <button
             onClick={() => setEmojiPickerOpen(!emojiPickerOpen)} // Toggle Emoji Picker
             className="cursor-pointer"
           >
-            😀 {/* Emoji icon can be any of your choice */}
+            😊 {/* Emoji icon can be any of your choice */}
           </button>
           {emojiPickerOpen && (
-            <div className="absolute bottom-[60px] bg-red-200 left-4 z-50">
-              <Picker data={data} onEmojiSelect={console.log} />
+            <div className="absolute bottom-[60px] left-4 z-50">
+              <EmojiPicker onEmojiClick={addEmoji} lazyLoadEmojis={true} />
             </div>
           )}
           <input
