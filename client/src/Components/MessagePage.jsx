@@ -39,6 +39,7 @@ const MessagePage = () => {
 
   const sendMsg = async () => {
     const encMsg = encryptMessage(msg);
+    const encImg = encryptMessage(imgsend);
     console.log("encryptMessage", encMsg);
     if (msg || imgsend) {
       if (socketConnection) {
@@ -47,7 +48,7 @@ const MessagePage = () => {
           receiver: userId,
           text: msg ? encMsg : "",
 
-          imageUrl: imgsend,
+          imageUrl: encImg,
           videoUrl: "",
         });
         setmsg("");
@@ -255,14 +256,14 @@ const MessagePage = () => {
                 <div className="  w-[280px] relative group pt-2 pb-0 ">
                   <img
                     onClick={() => handlePreview()}
-                    src={mg?.imageUrl}
+                    src={decryptMessage(mg?.imageUrl)}
                     alt="imgsend"
                     className=" w-full  rounded-md object-contain"
                   />
 
                   <div className=" hidden">
                     <Image
-                      src={mg?.imageUrl}
+                      src={decryptMessage(mg?.imageUrl)}
                       className="w-full  absolute bottom-[20px] h-full "
                       // alt=""
                       width={1}

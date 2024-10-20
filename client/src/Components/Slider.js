@@ -10,6 +10,7 @@ import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserSearch from "./UserSearch";
 import { FaRegImage } from "react-icons/fa6";
+import decryptMessage from "../encryptionMthods/decryptiMessage";
 const Slider = () => {
   const socketConnection = useSelector((state) => state.user.socketConnection);
   const navigate = useNavigate();
@@ -152,7 +153,7 @@ const Slider = () => {
                           {usr?.userDetails?.name}
                         </p>
                         <p className=" mt-[-2px] overflow-hidden m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px] ">
-                          {usr?.lastMsg?.text}
+                          {decryptMessage(usr?.lastMsg?.text)}
                         </p>
                         {usr?.lastMsg?.imageUrl && (
                           <p className=" flex gap-1 items-center m-0 text-ellipsis text-gray-400  line-clamp-1 text-[12px]">
