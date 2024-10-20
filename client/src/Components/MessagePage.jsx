@@ -48,7 +48,7 @@ const MessagePage = () => {
           receiver: userId,
           text: msg ? encMsg : "",
 
-          imageUrl: encImg,
+          imageUrl: imgsend === "" ? imgsend : encImg,
           videoUrl: "",
         });
         setmsg("");
@@ -315,7 +315,10 @@ const MessagePage = () => {
             {" "}
             <FaRegImage color="#800080" size={15} /> Image
           </label>
-          <p className=" hover:bg-slate-200 cursor-pointer px-2 py-1 font-medium rounded-md capitalize  flex items-center gap-2">
+          <p
+            onClick={() => toast.success("Video sending feature coming soon!")}
+            className=" hover:bg-slate-200 cursor-pointer px-2 py-1 font-medium rounded-md capitalize  flex items-center gap-2"
+          >
             {" "}
             <FaVideo color="#ffa933" size={15} />
             Video
