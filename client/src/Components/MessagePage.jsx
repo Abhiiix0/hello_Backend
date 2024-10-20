@@ -255,7 +255,7 @@ const MessagePage = () => {
                 {decryptMessage(mg?.text)}
               </p>
               {mg?.imageUrl && (
-                <div className="  w-[280px] relative group pt-2 pb-0 ">
+                <div className="  w-[280px] overflow-hidden relative group pt-2 pb-0 ">
                   <img
                     onClick={() => handlePreview()}
                     src={decryptMessage(mg?.imageUrl)}
