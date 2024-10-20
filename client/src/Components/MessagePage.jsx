@@ -154,8 +154,9 @@ const MessagePage = () => {
   // to download img from link
   const download = async (e) => {
     const imgss = decryptMessage(e);
-    // console.log(e, imgss);
-    fetch(imgss, {
+    const imgurl = imgss.replace("http", "https");
+    console.log(e, imgurl);
+    fetch(imgurl, {
       method: "GET",
       headers: {},
     })
