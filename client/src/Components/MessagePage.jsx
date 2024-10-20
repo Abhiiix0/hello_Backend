@@ -152,8 +152,10 @@ const MessagePage = () => {
   };
 
   // to download img from link
-  const download = (e) => {
-    fetch(e, {
+  const download = async (e) => {
+    const imgss = decryptMessage(e);
+    // console.log(e, imgss);
+    fetch(imgss, {
       method: "GET",
       headers: {},
     })
@@ -274,7 +276,7 @@ const MessagePage = () => {
                   </div>
 
                   <button
-                    onClick={() => download(decryptMessage(mg?.imageUrl))}
+                    onClick={() => download(mg?.imageUrl)}
                     className={`absolute hidden group-hover:block  ${
                       mg?.msgBySender === usser?._id ? " left-1" : " right-1"
                     } transition-opacity duration-300 bottom-1 border opacity-40 bg-white rounded-sm h-5 w-5`}

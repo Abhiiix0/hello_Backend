@@ -3,7 +3,6 @@ const url = `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_
 // const url = `https://api.cloudinary.com/v1_1/dldypjtlj/auto/upload`;
 
 const uploadImg = async (file) => {
-  console.log(url);
   try {
     const options = {
       maxSizeMB: 1, // Maximum size in MB
@@ -19,10 +18,10 @@ const uploadImg = async (file) => {
       body: formData,
     });
     const resData = await res.json();
-    console.log(resData);
+
     return resData;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 // chat-app-file
