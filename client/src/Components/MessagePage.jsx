@@ -40,7 +40,6 @@ const MessagePage = () => {
   const sendMsg = async () => {
     const encMsg = encryptMessage(msg);
     const encImg = encryptMessage(imgsend);
-    console.log("encryptMessage", encMsg);
     if (msg || imgsend) {
       if (socketConnection) {
         await socketConnection.emit("NewMessage", {
@@ -275,7 +274,7 @@ const MessagePage = () => {
                   </div>
 
                   <button
-                    onClick={() => download(mg?.imageUrl)}
+                    onClick={() => download(decryptMessage(mg?.imageUrl))}
                     className={`absolute hidden group-hover:block  ${
                       mg?.msgBySender === usser?._id ? " left-1" : " right-1"
                     } transition-opacity duration-300 bottom-1 border opacity-40 bg-white rounded-sm h-5 w-5`}
