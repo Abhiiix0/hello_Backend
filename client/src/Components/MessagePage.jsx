@@ -15,6 +15,8 @@ import { Button, Image, Modal, Spin } from "antd";
 import toast from "react-hot-toast";
 import axios from "axios";
 import EmojiPicker from "emoji-picker-react";
+import encryptMessage from "../encryptionMthods/encryptMessage";
+import decryptMessage from "../encryptionMthods/decryptiMessage";
 
 const MessagePage = () => {
   const navigate = useNavigate();
@@ -34,14 +36,17 @@ const MessagePage = () => {
   const [uploaderLoading, setuploaderLoading] = useState(false);
   const [imgsend, setimgsend] = useState("");
   const [currentChatUserId, setCurrentChatUserId] = useState(userId); // Track the active chat user
+
   const sendMsg = async () => {
+    const encMsg = encryptMessage(msg);
+    // console.log("encryptMessage", encMsg);
     if (msg || imgsend) {
       if (socketConnection) {
-        // console.log("img url", imgsend);
         await socketConnection.emit("NewMessage", {
           sender: usser._id,
           receiver: userId,
-          text: msg ? msg : "",
+          text: msg ? encMsg : "",
+
           imageUrl: imgsend,
           videoUrl: "",
         });
@@ -121,6 +126,8 @@ const MessagePage = () => {
   const addEmoji = (event, emojiObject) => {
     setmsg((prevMsg) => prevMsg + event.emoji); // Append the emoji to the message
   };
+
+  // this function delete all the chats permanently
   const deleteAllChats = async () => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/clear-chats`;
     const payload = {
@@ -134,20 +141,18 @@ const MessagePage = () => {
         url,
         data: payload,
       });
-      // console.log(response);
       if (response?.data?.status) {
         toast.success(response?.data?.message);
         setAllMessages([]);
         setoptionBtn(!openOption);
       }
     } catch (error) {
-      // toast.error("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
   // to download img from link
   const download = (e) => {
-    // console.log(e.target.href);
     fetch(e, {
       method: "GET",
       headers: {},
@@ -163,7 +168,6 @@ const MessagePage = () => {
         });
       })
       .catch((err) => {
-        // console.log(err);
         toast.error("Faild to Download");
       });
   };
@@ -238,13 +242,15 @@ const MessagePage = () => {
           {AllMessages?.map((mg, i) => (
             <div
               ref={currentMsg}
-              className={`bg-white shadow-md px-2 ${
+              className={`bg-white h-fit shadow-md px-2 ${
                 mg?.imageUrl && "pb-4"
               } w-fit max-w-[80%] rounded-md ${
                 mg?.msgBySender === usser?._id && " self-end"
               }`}
             >
-              <p className=" m-0 font-medium text-[15px]">{mg?.text}</p>
+              <p className=" m-0 font-medium h-fit w-fit text-[15px]">
+                {decryptMessage(mg?.text)}
+              </p>
               {mg?.imageUrl && (
                 <div className="  w-[280px] relative group pt-2 pb-0 ">
                   <img
