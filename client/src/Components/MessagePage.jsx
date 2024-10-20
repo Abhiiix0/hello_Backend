@@ -39,7 +39,7 @@ const MessagePage = () => {
 
   const sendMsg = async () => {
     const encMsg = encryptMessage(msg);
-    // console.log("encryptMessage", encMsg);
+    console.log("encryptMessage", encMsg);
     if (msg || imgsend) {
       if (socketConnection) {
         await socketConnection.emit("NewMessage", {
