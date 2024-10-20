@@ -155,7 +155,7 @@ const MessagePage = () => {
   const download = async (e) => {
     const imgss = decryptMessage(e);
     const imgurl = imgss.replace("http", "https");
-    console.log(e, imgurl);
+    // console.log(e, imgurl);
     fetch(imgurl, {
       method: "GET",
       headers: {},
