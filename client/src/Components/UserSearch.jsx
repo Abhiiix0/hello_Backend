@@ -10,6 +10,11 @@ const UserSearch = ({ open, close }) => {
   const [search, setSearch] = useState("");
   const [isLoading, setisLoading] = useState(false);
   const searchUserFUn = async () => {
+    if (search === "") {
+      toast.error("Please type something");
+      setsrchUsers([]);
+      return;
+    }
     try {
       setisLoading(true);
       const url = `${process.env.REACT_APP_BACKEND_URL}/api/search-user`;
@@ -30,7 +35,15 @@ const UserSearch = ({ open, close }) => {
   };
   return (
     <div>
-      <Modal open={open} onCancel={() => close(false)} footer={false}>
+      <Modal
+        open={open}
+        onCancel={() => {
+          close(false);
+          setsrchUsers([]);
+          setSearch("");
+        }}
+        footer={false}
+      >
         <div className=" mt-7">
           <div className=" flex gap-2">
             <input
