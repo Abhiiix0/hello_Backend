@@ -102,17 +102,16 @@ const MessagePage = () => {
         }
       });
       socketConnection.on("message", (data) => {
-        // console.log(data[0]);
-        // console.log(currentChatUserId);
-        if (
-          data[0].msgBySender === userId ||
-          data[0].msgByReceiver === userId
-        ) {
-          setAllMessages([...data]); // Update only if the message is from/to the current chat user
-        } else {
-          // This block can handle notification logic for other chats, if needed
-          // console.log("New message from another user, not updating this chat");
-        }
+        setAllMessages([...data]);
+        // if (
+        //   data[0].msgBySender === userId ||
+        //   data[0].msgByReceiver === userId
+        // ) {
+        //   setAllMessages([...data]); // Update only if the message is from/to the current chat user
+        // } else {
+        //   // This block can handle notification logic for other chats, if needed
+        //   // console.log("New message from another user, not updating this chat");
+        // }
       });
     }
   }, [socketConnection, userId, usser]);

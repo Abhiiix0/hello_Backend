@@ -23,7 +23,7 @@ const io = new Server(server, {
 const onlineUser = new Set();
 
 io.on("connection", async (socket) => {
-  console.log("connect user", socket.id);
+  // console.log("connect user", socket.id);
 
   const token = socket.handshake?.auth?.token;
 
@@ -36,18 +36,9 @@ io.on("connection", async (socket) => {
 
   socket.on("messagePage", async (userId) => {
     // Check if the provided userId is a valid ObjectId
-    console.log("userIdssss", JSON.stringify(userId).length);
-    // if (JSON.stringify(userId)?.length >= 25) {
-    //   const invalidUserPayload = {
-    //     message: "Invalid user ID",
-    //     success: false,
-    //   };
-    //   socket.emit("messageUser", invalidUserPayload);
-    //   return; // Exit early since userId is invalid
-    // }
+    // console.log("userIdssss", JSON.stringify(userId).length);
     try {
       const userDetails = await UserModel.findById(userId);
-
       if (!userDetails) {
         const payload = {
           message: "user not found",
@@ -62,6 +53,7 @@ io.on("connection", async (socket) => {
           email: userDetails?.email,
           online: onlineUser?.has(userId),
         };
+        // current user set
 
         socket.emit("messageUser", payload);
       }
@@ -72,8 +64,6 @@ io.on("connection", async (socket) => {
       };
       socket.emit("messageUser", payload);
     }
-
-    //
     const getConversationmsg = await ConversationModel.findOne({
       $or: [
         { sender: user?.id, receiver: userId },
@@ -87,6 +77,12 @@ io.on("connection", async (socket) => {
       getConversationmsg?.messages?.length === 0
         ? []
         : getConversationmsg?.messages;
+    const currentuserchat = await UserModel.findByIdAndUpdate(
+      user?.id, // Assuming data.sender is the current user's ID
+      { curentUserChat: userId }, // update the 'curentUserChat' field
+      { new: true } // return the updated document
+    );
+    const currentuserchat2 = await currentuserchat.save();
     io.to(user?.id).emit("prvMsg", datamsgss);
   });
 
@@ -134,8 +130,11 @@ io.on("connection", async (socket) => {
       })
         .populate("messages")
         .sort({ updatedAt: -1 });
-
-      io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      // Check if the receiver's `currentUserChat` is the sender
+      const recipientUser = await UserModel.findById(data.receiver);
+      if (recipientUser.curentUserChat.toString() === data.sender.toString()) {
+        io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      }
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
 
       //sidebar conversations
@@ -154,7 +153,6 @@ io.on("connection", async (socket) => {
         msgByReceiver: data?.receiver,
       });
       const saveMessage = await message.save();
-
       // update conversation
       const updateConversation = await ConversationModel.updateOne(
         {
@@ -172,7 +170,16 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
       console.log(getConversationmsg);
-      io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      // Check if the receiver's `currentUserChat` is the sender
+      const recipientUser = await UserModel.findById(data.receiver);
+      console.log(
+        "chat ids ",
+        recipientUser.curentUserChat.toString(),
+        data.sender.toString()
+      );
+      if (recipientUser.curentUserChat.toString() === data.sender.toString()) {
+        io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      }
       io.to(data.sender).emit("message", getConversationmsg.messages || []);
 
       //sidebar conversations

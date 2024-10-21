@@ -19,6 +19,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    curentUserChat: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   {
     timestamps: true,

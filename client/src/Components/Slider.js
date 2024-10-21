@@ -232,7 +232,7 @@ const Slider = () => {
             </div>
           ) : (
             <div className=" h-full grid place-content-center w-full">
-              <p className=" text-center w-full text-gray-200 font-semibold text-xl">
+              <p className=" text-center max-w-[320px] lg:w-full text-white text-3xl lg:text-gray-200 font-semibold lg:text-xl">
                 Explore users to start a conversation with.
               </p>
             </div>
