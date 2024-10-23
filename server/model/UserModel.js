@@ -22,7 +22,6 @@ const UserSchema = new mongoose.Schema(
     curentUserChat: {
       type: mongoose.Schema.ObjectId,
       ref: "User",
-      required: true,
     },
   },
   {
