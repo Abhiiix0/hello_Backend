@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "User",
     },
+    otp: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
