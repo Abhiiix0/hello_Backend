@@ -132,7 +132,7 @@ const Slider = () => {
             className="cursor-pointer m-0 p-2 flex justify-start gap-2 items-center hover:bg-[#e1f8f8] border-b"
           >
             {user?.profile_img === "" ? (
-              <p className=" bg-yellow-100  border-black border-[2px] w-6 grid place-content-center capitalize h-6 rounded-full">
+              <p className=" bg-yellow-100 text-[10px]  border-black border-[2px] w-6 grid place-content-center capitalize h-6 rounded-full">
                 {" "}
                 {user?.name.slice(0, 2)}
               </p>

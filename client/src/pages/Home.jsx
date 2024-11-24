@@ -65,15 +65,11 @@ const Home = () => {
     };
   }, []);
 
-  // console.log(location);
   const baseofMsg = location.pathname === "/";
-  // console.log(baseofMsg);
+
   return (
     <div className=" grid lg:grid-cols-[300px,1fr] h-full">
-      <section
-        className={`bg-white ${!baseofMsg && "hidden"} lg:block`}
-        //  className={`bg-white  lg:block`}
-      >
+      <section className={`bg-white ${!baseofMsg && "hidden"} lg:block`}>
         <Slider />
       </section>
       <section className={`  ${baseofMsg && "hidden"} `}>

@@ -5,6 +5,7 @@ import Home from "../pages/Home.jsx";
 import MessagePage from "../Components/MessagePage.jsx";
 import Login from "../pages/Login.jsx";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
+import ForgetPassOTP from "../pages/ForgetPassOTP.jsx";
 
 const Router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const Router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
+      { path: "fogetPassword", element: <ForgetPassOTP /> },
       {
         path: "",
         element: <Home />,

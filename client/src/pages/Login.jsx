@@ -84,25 +84,26 @@ const Login = () => {
                 Login
               </h2>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Password
-                </label>
-                {/* <input
+            <form onSubmit={handleSubmit} className="">
+              <div className=" space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg "
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  {/* <input
                   type="password"
                   name="password"
                   value={formData.password}
@@ -110,19 +111,25 @@ const Login = () => {
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#46CDCF]"
                 /> */}
-                <Input.Password
-                  value={formData.password}
-                  onChange={handleChange}
-                  name="password"
-                  required
-                  // placeholder="input password"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg "
-                />
+                  <Input.Password
+                    value={formData.password}
+                    onChange={handleChange}
+                    name="password"
+                    required
+                    // placeholder="input password"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg "
+                  />
+                </div>
               </div>
-
+              <Link
+                to="/fogetPassword"
+                className="font-semibold cursor-pointer hover:text-blue-800 text-blue-700 text-sm mt-2"
+              >
+                Forget Password ?
+              </Link>
               <button
                 type="submit"
-                className="w-full bg-[#46CDCF] text-white py-2 rounded-lg hover:bg-[#3BA6A7] transition duration-300"
+                className="w-full mt-4 bg-[#46CDCF] text-white py-2 rounded-lg hover:bg-[#3BA6A7] transition duration-300"
               >
                 Login
               </button>
