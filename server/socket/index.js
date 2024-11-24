@@ -82,7 +82,7 @@ io.on("connection", async (socket) => {
       { curentUserChat: userId }, // update the 'curentUserChat' field
       { new: true } // return the updated document
     );
-    const currentuserchat2 = await currentuserchat.save();
+    const currentuserchat2 = await currentuserchat?.save();
     io.to(user?.id).emit("prvMsg", datamsgss);
   });
 
@@ -131,18 +131,23 @@ io.on("connection", async (socket) => {
         .populate("messages")
         .sort({ updatedAt: -1 });
       // Check if the receiver's `currentUserChat` is the sender
-      const recipientUser = await UserModel.findById(data.receiver);
-      if (recipientUser.curentUserChat.toString() === data.sender.toString()) {
-        io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      const recipientUser = await UserModel.findById(data?.receiver);
+      if (
+        recipientUser?.curentUserChat?.toString() === data?.sender?.toString()
+      ) {
+        io.to(data?.receiver).emit(
+          "message",
+          getConversationmsg?.messages || []
+        );
       }
-      io.to(data.sender).emit("message", getConversationmsg.messages || []);
+      io.to(data?.sender).emit("message", getConversationmsg?.messages || []);
 
       //sidebar conversations
-      const coversationsSenders = await getConversations(data.sender);
-      const coversationsReceivers = await getConversations(data.receiver);
+      const coversationsSenders = await getConversations(data?.sender);
+      const coversationsReceivers = await getConversations(data?.receiver);
 
-      io.to(data.receiver).emit("alluserChat", coversationsReceivers);
-      io.to(data.sender).emit("alluserChat", coversationsSenders);
+      io.to(data?.receiver).emit("alluserChat", coversationsReceivers);
+      io.to(data?.sender).emit("alluserChat", coversationsSenders);
     } else {
       //message
       const message = new Messagemodel({
@@ -171,23 +176,28 @@ io.on("connection", async (socket) => {
         .sort({ updatedAt: -1 });
       console.log(getConversationmsg);
       // Check if the receiver's `currentUserChat` is the sender
-      const recipientUser = await UserModel.findById(data.receiver);
+      const recipientUser = await UserModel.findById(data?.receiver);
       console.log(
         "chat ids ",
-        recipientUser.curentUserChat.toString(),
-        data.sender.toString()
+        recipientUser?.curentUserChat?.toString(),
+        data?.sender?.toString()
       );
-      if (recipientUser.curentUserChat.toString() === data.sender.toString()) {
-        io.to(data.receiver).emit("message", getConversationmsg.messages || []);
+      if (
+        recipientUser?.curentUserChat?.toString() === data?.sender?.toString()
+      ) {
+        io.to(data?.receiver).emit(
+          "message",
+          getConversationmsg?.messages || []
+        );
       }
-      io.to(data.sender).emit("message", getConversationmsg.messages || []);
+      io.to(data?.sender).emit("message", getConversationmsg?.messages || []);
 
       //sidebar conversations
-      const coversationsSenders = await getConversations(data.sender);
-      const coversationsReceivers = await getConversations(data.receiver);
+      const coversationsSenders = await getConversations(data?.sender);
+      const coversationsReceivers = await getConversations(data?.receiver);
 
-      io.to(data.receiver).emit("alluserChat", coversationsReceivers);
-      io.to(data.sender).emit("alluserChat", coversationsSenders);
+      io.to(data?.receiver).emit("alluserChat", coversationsReceivers);
+      io.to(data?.sender).emit("alluserChat", coversationsSenders);
     }
   });
 
@@ -199,10 +209,10 @@ io.on("connection", async (socket) => {
   // msg seen logic
   socket.on("seen", async (msgByUserId) => {
     // search if conversation is available or not
-    const coversation = await ConversationModel.findOne({
+    const coversation = await ConversationModel?.findOne({
       $or: [
-        { sender: user._id, receiver: msgByUserId },
-        { sender: msgByUserId, receiver: user._id },
+        { sender: user?._id, receiver: msgByUserId },
+        { sender: msgByUserId, receiver: user?._id },
       ],
     });
     const conversationMessageId = coversation?.messages || [];

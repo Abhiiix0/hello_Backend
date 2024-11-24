@@ -2,10 +2,13 @@ import { Modal, Spin } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 // import searchUser from "../../../server/controller/searchUser";
 
 const UserSearch = ({ open, close }) => {
+  const user = useSelector((state) => state.user);
+  console.log("user", user);
   const [srchUsers, setsrchUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [isLoading, setisLoading] = useState(false);
@@ -25,7 +28,8 @@ const UserSearch = ({ open, close }) => {
         withCredentials: true,
       });
       // console.log(res);
-      setsrchUsers(res?.data?.user);
+      const newdata = res?.data?.user.filter((d) => d._id !== user?._id);
+      setsrchUsers(newdata);
       setisLoading(false);
     } catch (error) {
       setsrchUsers([]);
